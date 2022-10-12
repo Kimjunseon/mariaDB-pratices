@@ -107,7 +107,9 @@ select name, birth
 select count(*) -- 칼럼의 수 확인, *은 풀스캔
 	from pet;
 
-
+-- mysql -u hr -D employees -p -e "source .\employees.sql" (윈도우 기반)
+-- mysql -u hr -D employees -p < employees.sql (리눅스 기반)
+-- emp_no: 사원번호
 
 
  

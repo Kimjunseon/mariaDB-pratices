@@ -6,7 +6,7 @@ show databases;
 
 
 -- db 사용자 삭제
--- drop user 'webdb'@'localhost';
+drop user 'webdb'@'localhost';
 
 -- db 사용자 생성
 create user 'webdb'@'localhost' identified by 'webdb';

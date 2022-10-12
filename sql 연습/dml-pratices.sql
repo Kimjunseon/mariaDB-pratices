@@ -111,5 +111,11 @@ select count(*) -- 칼럼의 수 확인, *은 풀스캔
 -- mysql -u hr -D employees -p < employees.sql (리눅스 기반)
 -- emp_no: 사원번호
 
+-- 쿼리 순서
+-- select 4
+-- from 1
+-- where 2
+-- order by ... 3
+
 
  

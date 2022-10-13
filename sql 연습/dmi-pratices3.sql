@@ -17,7 +17,8 @@ select first_name, hire_date
 	where '1989' = substring(hire_date, 1, 4);
     
 -- lpad(오른쪽 정렬), rpad(왼쪽 정렬)
-select lpad('123', 10, '-');
+select lpad('123', 4, '-');
+select rpad('123', 4, '-');
 
 -- 예제) 직원들의 월급을 오른쪽 정렬(빈공간은 *)
 select lpad(salary, 10 , '*')

@@ -14,7 +14,7 @@ select sysdate(), sleep(2), sysdate(); -- 쿼리가 실행 될 때 시작
 -- 2022년 10월 13일 10:12:49 %Y는 연도 %m은 월의 숫자 %M은 월의 영어 %h 시 % 분 %s 초
 select date_format(now(), '%Y년 %m월 %d일 %h:%i:%s');
 select date_format(now(), '%d %b, \'%y %h:%i:%s');
-
+select date_format(curdate(), '%y%m');
 -- period_diff() 기간구하기
 -- 포맷팅: YYMM YYYYMM
 -- 예) 근무 개월 수

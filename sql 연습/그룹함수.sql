@@ -30,14 +30,8 @@ select emp_no, avg(salary)
     having avg(salary) < '60000';
 
 
-select emp_no, avg(salary), to_date
-	from salaries 
-    where emp_no < '10010'
-    group by emp_no
-    having avg(salary) < '60000'
-    order by to_date like '9999%';
-
     
+
     
     
     

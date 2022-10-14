@@ -26,12 +26,12 @@ select a.first_name, b.title
 	from employees a join titles b on a.emp_no = b.emp_no
 	where b.to_date = '9999-01-01';
     
--- natural
+-- natural (표준)
 select a.first_name, b.title
 	from employees a natural join titles b
 	where b.to_date = '9999-01-01';
 
--- join ~ using
+-- join ~ using (표준)
 -- natural join 문제점
 select count(*)
 	from salaries a natural join titles b
@@ -41,7 +41,7 @@ select count(*)
 	from salaries a join titles b using(emp_no)
    where b.to_date = '1999-01-01';
    
--- 3) join ~ on
+-- 3) join ~ on (표준)
 -- 예제) 현재 직책별 평균 연봉을 큰 순서대로 출력
 select b.title, avg(salary)
 	from salaries a
@@ -99,6 +99,17 @@ WHERE
 GROUP BY a.dept_name
 ORDER BY AVG(salary) DESC;
 
+
+-- 복습하기 join문
+-- inner join
+-- join on (표준)
+-- natural join (표준)
+-- join ~using (표준)
+
+-- outer join
+-- left join on (표준)
+-- right join on (표준)
+-- full join on (표준)
 
 
 

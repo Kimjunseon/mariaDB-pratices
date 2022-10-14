@@ -1,0 +1,17 @@
+비즈니스(도메인, 문제영역) 분석
+
+-데이터 분석-
+data architect
+data modeling
+schema design
+데이터베이스 설계
+e]ntity r]ealation d]iagram erd 작성
+
+데이터 정규화
+1NF
+2NF
+3NF
+4NF
+5NF
+
+1NF 정규화

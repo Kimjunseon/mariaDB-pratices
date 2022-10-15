@@ -73,39 +73,122 @@ order by max(c.salary) desc;
 -- 현재 자신의 매니저보다 높은 연봉을 받고 있는 직원은?
 -- 부서이름, 사원이름, 연봉, 매니저 이름, 메니저 연봉 순으로 출력합니다.
 
+-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');-- 문제1.
+-- 현재 평균 연봉보다 많은 월급을 받는 직원은 몇 명이나 있습니까?
+select count(a.emp_no)
+	from employees a, salaries b
+    where a.emp_no = b.emp_no
+    and b.to_date = '9999-01-01'
+    and b.salary > (select avg(salary)
+				      from salaries
+				     where to_date = '9999-01-01');
 
 
 
 
 
-
--- 문제6.
--- 평균 연봉이 가장 높은 부서는? 
-
--- 문제7.
--- 평균 연봉이 가장 높은 직책?
-
--- 문제8.
--- 현재 자신의 매니저보다 높은 연봉을 받고 있는 직원은?
--- 부서이름, 사원이름, 연봉, 매니저 이름, 메니저 연봉 순으로 출력합니다.
-
--- 문제6.
--- 평균 연봉이 가장 높은 부서는? 
-
--- 문제7.
--- 평균 연봉이 가장 높은 직책?
-
--- 문제8.
--- 현재 자신의 매니저보다 높은 연봉을 받고 있는 직원은?
--- 부서이름, 사원이름, 연봉, 매니저 이름, 메니저 연봉 순으로 출력합니다.
-
--- 문제6.
--- 평균 연봉이 가장 높은 부서는? 
-
--- 문제7.
--- 평균 연봉이 가장 높은 직책?
-
--- 문제8.
--- 현재 자신의 매니저보다 높은 연봉을 받고 있는 직원은?
--- 부서이름, 사원이름, 연봉, 매니저 이름, 메니저 연봉 순으로 출력합니다.
 

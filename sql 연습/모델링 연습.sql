@@ -20,6 +20,7 @@ insert
   
   show tables;
   
+  
   select *
    from catagory;
   
@@ -77,4 +78,13 @@ select *
  
  select *
   from order_book;
+ 
+ 
+ delete
+	 from member
+     where no = 3;
+ 
+ delete
+	 from member
+     where no = 4;
  

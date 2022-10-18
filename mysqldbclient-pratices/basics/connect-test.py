@@ -7,8 +7,9 @@ try:
     print("success")
 
 except OperationalError as e:
-    print("error!")
-print('end!')
+    print(f'에러: {e}')
+
+print("end")
 
 # cursor
 # cursor = db.cursor()

@@ -12,6 +12,12 @@ def run_add():
     model.insert(first_name, last_name, email)
     run_list()
 
+def run_delete():
+    email = input("email: ")
+    model.delete(email)
+    run_list()
+
+
 def main():
     while True:
         cmd = input('(l)ist, (a)dd, (d)elete, (q)uit > ')
@@ -26,9 +32,7 @@ def main():
             run_add()
 
         elif cmd == 'd':
-            run_list()
-            model.delete()
-            run_list()
+            run_delete()
         else:
             print("알 수 없는 입력입니다.")
             print("l, q, a, d 값 중 1개만 입력해주세요.")

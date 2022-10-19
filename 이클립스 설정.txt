@@ -1,0 +1,16 @@
+이클립스 설치
+
+1. Workspace & project
+
+2. 기본 설정 (window - property)
+	- encoding
+	- spelling disable
+
+3. prespective(window > prespective) 관리
+	- java SE
+	- java EE
+
+4. window > property> java > complier를 자바 12수정
+
+5. Installed JREs 설정 C:\Program Files\Java\jdk-12.0.2
+

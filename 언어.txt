@@ -1,0 +1,7 @@
+자바, 웹서비스 응용 백엔드: 스프링
+자바스크립트 웹서비스 응용 백엔드: 익스프레스js
+자바스크립트 웹서비스 응용 프론트엔드: vue.js react angular.js
+
+파이썬 - django, flask
+
+data 분석 ml dl python

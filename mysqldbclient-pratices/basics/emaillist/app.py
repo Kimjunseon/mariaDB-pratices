@@ -1,7 +1,7 @@
-import model
+import model_email
 
 def run_list():
-    results = model.findall()
+    results = model_email.findall()
     for index, result in enumerate(results):
         print(f"{index + 1}: {result['first_name']}{result['last_name']}:{result['email']}")
 
@@ -9,12 +9,12 @@ def run_add():
     first_name = input("성을 입력하세요. ")
     last_name = input("이름을 입력하세요. ")
     email = input("이메일을 입력하세요. ")
-    model.insert(first_name, last_name, email)
+    model_email.insert(first_name, last_name, email)
     run_list()
 
 def run_delete():
     email = input("email: ")
-    model.delete(email)
+    model_email.delete(email)
     run_list()
 
 

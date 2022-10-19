@@ -1,0 +1,23 @@
+깃토큰
+git test
+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
+.gitignore
+
+마리아db
+u 계정이름
+D 데이터베이스
+p 패스워드
+
+
+git init
+git add -A
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Kimjunseon/Web_Ai_Service.git
+git push -u origin main
+----설정이후에는----
+git add -A
+git commit -m ""
+git push 
+----깃에서 내려받을때는---
+git pull

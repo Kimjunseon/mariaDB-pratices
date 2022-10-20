@@ -9,7 +9,7 @@ def connetion():
                         db='bookmall',
                         charset='utf8')
     return  bookmall
-def select_model_member_catagory():
+def select_model_catagory():
     bookmall = connetion()
     cursor = bookmall.cursor(DictCursor)
     sql = "select catagory_name from catagory order by no desc"

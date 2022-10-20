@@ -1,41 +1,42 @@
-import model_email
+import model
 
 def run_list():
-    results = model_email.findall()
+    results = model.findall()
+
     for index, result in enumerate(results):
-        print(f"{index + 1}: {result['first_name']}{result['last_name']}:{result['email']}")
+        print(f'{index + 1}:{result["first_name"]}{result["last_name"]}:{result["email"]}')
+
 
 def run_add():
-    first_name = input("성을 입력하세요. ")
-    last_name = input("이름을 입력하세요. ")
-    email = input("이메일을 입력하세요. ")
-    model_email.insert(first_name, last_name, email)
+    firstname = input('first name: ')
+    lastname = input('last name: ')
+    email = input('email: ')
+
+    model.insert(firstname, lastname, email)
+
+    print("------------------------------")
     run_list()
 
 def run_delete():
-    email = input("email: ")
-    model_email.delete(email)
+    email = input('email: ')
+    model.deletebyemail(email)
     run_list()
-
 
 def main():
     while True:
-        cmd = input('(l)ist, (a)dd, (d)elete, (q)uit > ')
+        cmd = input('(l)ist, (a)dd, (d)elete (q)uit > ')
 
         if cmd == 'q':
-            print("종료")
             break
         elif cmd == 'l':
             run_list()
-
         elif cmd == 'a':
             run_add()
-
         elif cmd == 'd':
             run_delete()
         else:
-            print("알 수 없는 입력입니다.")
-            print("l, q, a, d 값 중 1개만 입력해주세요.")
+            print('알 수 없는 명령입니다.')
+
 
 if __name__ == '__main__':
     main()

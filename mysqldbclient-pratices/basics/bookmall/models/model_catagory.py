@@ -9,6 +9,20 @@ def connetion():
                         db='bookmall',
                         charset='utf8')
     return  bookmall
+
+try:
+    bookmall = connetion()
+    cursor = bookmall.cursor()
+    sql = 'insert into catagory(no, catagory_name) values(%s, %s)'
+    val = [(1, 'IT'), (2, 'NOVEL'), (3, 'SF')]
+    cursor.executemany(sql, val)
+    bookmall.commit()
+    cursor.close()
+    bookmall.close()
+
+except:
+    print(end='')
+
 def select_model_catagory():
     bookmall = connetion()
     cursor = bookmall.cursor(DictCursor)

@@ -9,10 +9,24 @@ def connetion():
                         db='bookmall',
                         charset='utf8')
     return  bookmall
-def select_model_order_book():
+
+try:
+    bookmall = connetion()
+    cursor = bookmall.cursor()
+    sql = 'insert into cart(no, member_no, book_no, book_count) values(%s, %s, %s, %s)'
+    val = [(1, 1, 1, 2), (2, 1, 2, 1)]
+    cursor.executemany(sql, val)
+    bookmall.commit()
+    cursor.close()
+    bookmall.close()
+
+except:
+    print(end='')
+
+def select_model_cart():
     bookmall = connetion()
     cursor = bookmall.cursor(DictCursor)
-    sql = "select book_number, book_name, book_count from order_book order by no desc"
+    sql = "select b.book_name, a.book_count, b.price from cart a, book b where a.no = b.no order by a.no desc"
     cursor.execute(sql)
     results = cursor.fetchall();
     cursor.close()

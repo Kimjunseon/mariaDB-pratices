@@ -1,6 +1,6 @@
 깃토큰
-git test
-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
+studycode
+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
 .gitignore
 
 마리아db

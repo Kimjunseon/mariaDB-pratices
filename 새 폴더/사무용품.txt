@@ -1,6 +1,6 @@
 깃토큰
 studycode
-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
+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
 .gitignore
 
 마리아db

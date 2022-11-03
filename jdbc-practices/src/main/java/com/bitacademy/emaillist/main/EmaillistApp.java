@@ -1,10 +1,11 @@
 package com.bitacademy.emaillist.main;
 
 import java.util.List;
+
 import java.util.Scanner;
 
-import com.bitacademy.emailist.dao.EmaillistDao;
-import com.bitacademy.emiallist.vo.EmaillistVo;
+import com.bitacademy.emaillist.dao.EmaillistDao;
+import com.bitacademy.emaillist.vo.EmaillistVo;
 
 public class EmaillistApp {
 	private static Scanner scanner = null;
@@ -31,6 +32,11 @@ public class EmaillistApp {
 	}
 
 	private static void doDelete() {
+		System.out.print("이메일:");
+		String email = scanner.nextLine();
+		System.out.println(email + "의 리스트가 삭제되었습니다.");
+		boolean list = new EmaillistDao().findDelete(email);
+		doList();
 	}
 
 	private static void doAdd() {
@@ -44,6 +50,7 @@ public class EmaillistApp {
 		String email = scanner.nextLine();
 
 		System.out.println(firstName + ":" + lastName + ":" + email);
+		boolean list = new EmaillistDao().findAdd(firstName, lastName, email);
 		
 		doList();
 	}

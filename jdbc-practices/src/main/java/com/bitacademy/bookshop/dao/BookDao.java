@@ -126,4 +126,45 @@ public class BookDao {
 		
 		return conn;
 	}
+
+	public boolean updateStatus(long no, String string) {
+		Connection conn = null;
+		boolean result = false;
+		PreparedStatement pstmt = null;
+		
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+			String sql = "update book set status = '" + string + "'where no ="  + no ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			//5. SQL 실행
+			int count = pstmt.executeUpdate();
+
+			//6. 결과 처리
+			result = count == 1;
+	
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("드라이버 로딩 실패:" + e);
+		} catch (SQLException e) {
+			System.out.println("Error:" + e);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
 }

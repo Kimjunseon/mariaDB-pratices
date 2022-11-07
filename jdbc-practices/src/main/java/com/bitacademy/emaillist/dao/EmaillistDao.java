@@ -12,34 +12,31 @@ import com.bitacademy.emaillist.vo.EmaillistVo;
 
 public class EmaillistDao {
 	public Boolean insert(EmaillistVo vo) {
-		return false;
-	}
-	
-	public Boolean deleteByEmail(String email) {
-		return false;
-	}
-	
-	public Boolean findDelete(String email) {
 		boolean result = false;
+		
 		Connection conn = null;
 		Statement stmt = null;
 		
 		try {
+			//1. JDBC Driver Class Loading
 			Class.forName("org.mariadb.jdbc.Driver");
 			
+			//2. 연결하기
 			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 			
+			//3. Statement 생성
 			stmt = conn.createStatement();
 			
 			//4. SQL 실행
 			String sql = 
-				"delete" +
-				"  from emaillist" +
-				" where email = " + "'"+ email + "'";
+				" insert" +
+				"   into emaillist" +
+				" values (null, '" + vo.getFirstName() + "', '" + vo.getLastName() + "', '" + vo.getEmail() + "')";
 			
 			int count = stmt.executeUpdate(sql);
 			
+			//5. 결과 처리
 			result = count == 1;
 			
 		} catch (ClassNotFoundException e) {
@@ -63,29 +60,32 @@ public class EmaillistDao {
 		return result;
 	}
 	
-	
-	public Boolean findAdd(String firstName, String lastName, String email) {
+	public Boolean deleteByEmail(String email) {
 		boolean result = false;
 		Connection conn = null;
 		Statement stmt = null;
 		
 		try {
+			//1. JDBC Driver Class Loading
 			Class.forName("org.mariadb.jdbc.Driver");
 			
+			//2. 연결하기
 			String url = "jdbc:mysql://127.0.0.1:3306/webdb?charset=utf8";
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 			
+			//3. Statement 생성
 			stmt = conn.createStatement();
 			
+			//4. SQL 실행
 			String sql = 
-					" insert" +
-					" into emaillist" +
-					" values (null, '" + firstName + "', '" + lastName + "', '" + email + "')";
-					
+				"delete" +
+				"  from emaillist" +
+				" where email = '" + email + "'";
+			
 			int count = stmt.executeUpdate(sql);
+			
+			//5. 결과 처리
 			result = count == 1;
-			
-			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패:" + e);
 		} catch (SQLException e) {
@@ -102,16 +102,14 @@ public class EmaillistDao {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} return result;
+		}
+		
+		return result;
 	}
-	
-	
-	
-	
 	
 	public List<EmaillistVo> findAll() {
 		List<EmaillistVo> result = new ArrayList<>();
-		
+	
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;

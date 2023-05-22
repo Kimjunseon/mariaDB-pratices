@@ -1,0 +1,2557 @@
+-- MariaDB dump 10.19  Distrib 10.6.12-MariaDB, for Win64 (AMD64)
+--
+-- Host: localhost    Database: sfrms
+-- ------------------------------------------------------
+-- Server version	10.6.12-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `bdm_comp`
+--
+
+DROP TABLE IF EXISTS `bdm_comp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_comp` (
+  `comp_cd` varchar(32) NOT NULL,
+  `comp_nm_kr` varchar(1024) NOT NULL,
+  `comp_nm_en` varchar(128) NOT NULL,
+  `ctgr_cd` varchar(2) DEFAULT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(40) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `modi_user_id` varchar(4) DEFAULT NULL,
+  PRIMARY KEY (`comp_cd`),
+  UNIQUE KEY `comp_cd` (`comp_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_comp`
+--
+
+LOCK TABLES `bdm_comp` WRITE;
+/*!40000 ALTER TABLE `bdm_comp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_comp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_dpu_insp`
+--
+
+DROP TABLE IF EXISTS `bdm_dpu_insp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_dpu_insp` (
+  `insp_id` varchar(20) NOT NULL,
+  `dpu_mst_id` varchar(20) NOT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`insp_id`),
+  UNIQUE KEY `insp_id` (`insp_id`),
+  KEY `fk_bdmdpuinsp_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmdpuinsp_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmdpuinsp_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmdpuinsp_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmdpuinsp_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmdpuinsp_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_dpu_insp`
+--
+
+LOCK TABLES `bdm_dpu_insp` WRITE;
+/*!40000 ALTER TABLE `bdm_dpu_insp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_dpu_insp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_dpu_mnl`
+--
+
+DROP TABLE IF EXISTS `bdm_dpu_mnl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_dpu_mnl` (
+  `dpu_mnl_id` varchar(20) NOT NULL,
+  `dpu_insp_id` varchar(20) NOT NULL,
+  `manual_nm` varchar(20) DEFAULT NULL,
+  `manual_txt` text DEFAULT NULL,
+  `manual_path` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`dpu_mnl_id`),
+  KEY `fk_bdmdpumnl_bdmdpuinsp_dpuinspid` (`dpu_insp_id`),
+  KEY `fk_bdmdpumnl_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmdpumnl_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmdpumnl_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmdpumnl_bdmdpuinsp_dpuinspid` FOREIGN KEY (`dpu_insp_id`) REFERENCES `bdm_dpu_insp` (`insp_id`),
+  CONSTRAINT `fk_bdmdpumnl_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmdpumnl_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmdpumnl_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_dpu_mnl`
+--
+
+LOCK TABLES `bdm_dpu_mnl` WRITE;
+/*!40000 ALTER TABLE `bdm_dpu_mnl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_dpu_mnl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_dpu_mst`
+--
+
+DROP TABLE IF EXISTS `bdm_dpu_mst`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_dpu_mst` (
+  `dpu_mst_id` varchar(20) NOT NULL,
+  `dpu_tcd` varchar(20) NOT NULL,
+  `dpu_mst_proc_cd` varchar(20) NOT NULL,
+  `dpu_insp_cd` varchar(20) NOT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`dpu_mst_id`),
+  KEY `fk_bdmdpumst_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmdpumst_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmdpumst_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmdpumst_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_dpu_mst`
+--
+
+LOCK TABLES `bdm_dpu_mst` WRITE;
+/*!40000 ALTER TABLE `bdm_dpu_mst` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_dpu_mst` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_equip_bas`
+--
+
+DROP TABLE IF EXISTS `bdm_equip_bas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_equip_bas` (
+  `equip_id` varchar(22) NOT NULL,
+  `equip_nm` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `sub_proc_cd` varchar(20) NOT NULL,
+  `location_nm` varchar(20) DEFAULT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`equip_id`),
+  KEY `fk_bdmequipbas_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmequipbas_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmequipbas_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmequipbas_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmequipbas_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmequipbas_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_equip_bas`
+--
+
+LOCK TABLES `bdm_equip_bas` WRITE;
+/*!40000 ALTER TABLE `bdm_equip_bas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_equip_bas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_menu_mgnt`
+--
+
+DROP TABLE IF EXISTS `bdm_menu_mgnt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_menu_mgnt` (
+  `menu_mgnt_id` varchar(20) NOT NULL,
+  `menu_cd` varchar(20) NOT NULL,
+  `scrn_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`menu_mgnt_id`),
+  KEY `fk_bdmmenumgnt_sysmenubas_menucd` (`menu_cd`),
+  KEY `fk_bdmmenumgnt_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmmenumgnt_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmmenumgnt_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmmenumgnt_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmmenumgnt_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmmenumgnt_sysmenubas_menucd` FOREIGN KEY (`menu_cd`) REFERENCES `sys_menu_bas` (`menu_cd`),
+  CONSTRAINT `fk_bdmmenumgnt_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_menu_mgnt`
+--
+
+LOCK TABLES `bdm_menu_mgnt` WRITE;
+/*!40000 ALTER TABLE `bdm_menu_mgnt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_menu_mgnt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_proc_mst`
+--
+
+DROP TABLE IF EXISTS `bdm_proc_mst`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_proc_mst` (
+  `proc_mst_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `sub_proc_cd` varchar(20) NOT NULL,
+  `insp_cd` varchar(20) NOT NULL,
+  `unit_cd` varchar(20) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`proc_mst_id`),
+  KEY `fk_bdmprocmst_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmprocmst_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmprocmst_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmprocmst_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_proc_mst`
+--
+
+LOCK TABLES `bdm_proc_mst` WRITE;
+/*!40000 ALTER TABLE `bdm_proc_mst` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_proc_mst` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_proc_mst_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_proc_mst_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_proc_mst_mixrm` (
+  `proc_mst_mixrm_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `sub_proc_cd` varchar(20) NOT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`proc_mst_mixrm_id`),
+  UNIQUE KEY `proc_mst_mixrm_id` (`proc_mst_mixrm_id`),
+  KEY `fk_bdmprocmstmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmprocmstmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmprocmstmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmprocmstmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_proc_mst_mixrm`
+--
+
+LOCK TABLES `bdm_proc_mst_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_proc_mst_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_proc_mst_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_insp`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_insp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_insp` (
+  `rom_insp_id` varchar(20) NOT NULL,
+  `rom_proc_mgnt_id` varchar(20) NOT NULL,
+  `shift_cd` varchar(20) NOT NULL,
+  `type_cd` char(1) DEFAULT NULL,
+  `img_yn` char(1) DEFAULT NULL,
+  `detail_yn` char(1) DEFAULT NULL,
+  `vehl_yn` char(1) DEFAULT NULL,
+  `vehl_cnt` int(11) DEFAULT NULL,
+  `equip_yn` char(1) DEFAULT NULL,
+  `equip_cnt` int(11) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_insp_id`),
+  KEY `fk_bdmrominsp_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrominsp_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrominsp_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrominsp_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominsp_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominsp_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_insp`
+--
+
+LOCK TABLES `bdm_rom_insp` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_insp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_insp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_insp_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_insp_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_insp_mixrm` (
+  `rom_insp_mixrm_id` varchar(20) NOT NULL,
+  `proc_mst_mixrm_id` varchar(20) NOT NULL,
+  `shift_cd` varchar(20) NOT NULL,
+  `type_cd` char(1) DEFAULT NULL,
+  `img_yn` char(1) DEFAULT NULL,
+  `detail_yn` char(1) DEFAULT NULL,
+  `vehl_yn` char(1) DEFAULT NULL,
+  `vehl_cnt` int(11) DEFAULT NULL,
+  `equip_yn` char(1) DEFAULT NULL,
+  `equip_cnt` int(11) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_insp_mixrm_id`),
+  KEY `fk_bdmrominspmixrm_bdmprocmstmixrm_procmstmixrmid` (`proc_mst_mixrm_id`),
+  KEY `fk_bdmrominspmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrominspmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrominspmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrominspmixrm_bdmprocmstmixrm_procmstmixrmid` FOREIGN KEY (`proc_mst_mixrm_id`) REFERENCES `bdm_proc_mst_mixrm` (`proc_mst_mixrm_id`),
+  CONSTRAINT `fk_bdmrominspmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominspmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominspmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_insp_mixrm`
+--
+
+LOCK TABLES `bdm_rom_insp_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_insp_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_insp_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_insp_std`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_insp_std`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_insp_std` (
+  `rom_insp_std_id` varchar(20) NOT NULL,
+  `rom_proc_mgnt_id` varchar(20) NOT NULL,
+  `rom_insp_id` varchar(20) NOT NULL,
+  `equip_id` varchar(20) NOT NULL,
+  `vehl_cd` varchar(20) NOT NULL,
+  `insp_std` varchar(20) DEFAULT NULL,
+  `norm_llm` int(11) DEFAULT NULL,
+  `norm_ulm` int(11) DEFAULT NULL,
+  `desc_img` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_insp_std_id`),
+  KEY `fk_bdmrominspstd_bdmromprocmgnt_romprocmgntid` (`rom_proc_mgnt_id`),
+  KEY `fk_bdmrominspstd_bdmrominsp_rominspid` (`rom_insp_id`),
+  KEY `fk_bdmrominspstd_bdmequipbas_equipid` (`equip_id`),
+  KEY `fk_bdmrominspstd_bdmvehlmgnt_vehlcd` (`vehl_cd`),
+  KEY `fk_bdmrominspstd_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrominspstd_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrominspstd_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrominspstd_bdmequipbas_equipid` FOREIGN KEY (`equip_id`) REFERENCES `bdm_equip_bas` (`equip_id`),
+  CONSTRAINT `fk_bdmrominspstd_bdmrominsp_rominspid` FOREIGN KEY (`rom_insp_id`) REFERENCES `bdm_rom_insp` (`rom_insp_id`),
+  CONSTRAINT `fk_bdmrominspstd_bdmromprocmgnt_romprocmgntid` FOREIGN KEY (`rom_proc_mgnt_id`) REFERENCES `bdm_rom_proc_mgnt` (`rom_proc_mgnt_id`),
+  CONSTRAINT `fk_bdmrominspstd_bdmvehlmgnt_vehlcd` FOREIGN KEY (`vehl_cd`) REFERENCES `bdm_vehl_mgnt` (`vehl_mgnt_id`),
+  CONSTRAINT `fk_bdmrominspstd_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominspstd_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominspstd_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_insp_std`
+--
+
+LOCK TABLES `bdm_rom_insp_std` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_insp_std` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_insp_std` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_insp_std_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_insp_std_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_insp_std_mixrm` (
+  `rom_insp_std_mixrm_id` varchar(20) NOT NULL,
+  `rom_proc_mgnt_mixrm_id` varchar(20) NOT NULL,
+  `rom_insp_mixrm_id` varchar(20) NOT NULL,
+  `equip_id` varchar(20) NOT NULL,
+  `vehl_cd` varchar(20) NOT NULL,
+  `norm_llm` int(11) DEFAULT NULL,
+  `norm_ulm` int(11) DEFAULT NULL,
+  `desc_img` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  `insp_std` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`rom_insp_std_mixrm_id`),
+  KEY `fk_bdmrominspstdmixrm_bdmromprocmgntmixrm_romprocmgntmixrmid` (`rom_proc_mgnt_mixrm_id`),
+  KEY `fk_bdmrominspstdmixrm_bdmromprocmgntmixrm_rominspmixrmid` (`rom_insp_mixrm_id`),
+  KEY `fk_bdmrominspstdmixrm_bdmequipbas_equipid` (`equip_id`),
+  KEY `fk_bdmrominspstdmixrm_bdmvehlmgnt_vehlcd` (`vehl_cd`),
+  KEY `fk_bdmrominspstdmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrominspstdmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrominspstdmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_bdmequipbas_equipid` FOREIGN KEY (`equip_id`) REFERENCES `bdm_equip_bas` (`equip_id`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_bdmromprocmgntmixrm_rominspmixrmid` FOREIGN KEY (`rom_insp_mixrm_id`) REFERENCES `bdm_rom_insp_mixrm` (`rom_insp_mixrm_id`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_bdmromprocmgntmixrm_romprocmgntmixrmid` FOREIGN KEY (`rom_proc_mgnt_mixrm_id`) REFERENCES `bdm_rom_proc_mgnt_mixrm` (`rom_proc_mgnt_mixrm_id`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_bdmvehlmgnt_vehlcd` FOREIGN KEY (`vehl_cd`) REFERENCES `bdm_vehl_mgnt` (`vehl_mgnt_id`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominspstdmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_insp_std_mixrm`
+--
+
+LOCK TABLES `bdm_rom_insp_std_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_insp_std_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_insp_std_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_insp_tmset`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_insp_tmset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_insp_tmset` (
+  `insp_tmset_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `rom_proc_mgnt_id` varchar(20) NOT NULL,
+  `rom_inspect_id` varchar(20) NOT NULL,
+  `period_seq` int(11) DEFAULT NULL,
+  `shift_seq` int(11) DEFAULT NULL,
+  `tmset_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`insp_tmset_id`),
+  KEY `fk_bdmrominsptmset_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrominsptmset_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrominsptmset_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrominsptmset_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominsptmset_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominsptmset_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_insp_tmset`
+--
+
+LOCK TABLES `bdm_rom_insp_tmset` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_insp_tmset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_insp_tmset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_insp_tmset_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_insp_tmset_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_insp_tmset_mixrm` (
+  `insp_tmset_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `rom_proc_mst_mixrm_cd` varchar(20) NOT NULL,
+  `rom_inspect_mixrm_id` varchar(20) NOT NULL,
+  `period_cnt` int(11) DEFAULT NULL,
+  `day_insp1_yn` char(1) DEFAULT NULL,
+  `day_insp2_yn` char(1) DEFAULT NULL,
+  `ngt_insp1_yn` char(1) DEFAULT NULL,
+  `ngt_insp2_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`insp_tmset_id`),
+  KEY `fk_bdmrominsptmsetmixrm_bdmprocmstmixrm_romprocmstmixrmcd` (`rom_proc_mst_mixrm_cd`),
+  KEY `fk_bdmrominsptmsetmixrm_bdmrominspmixrm_romprocmstmixrmcd` (`rom_inspect_mixrm_id`),
+  KEY `fk_bdmrominsptmsetmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrominsptmsetmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrominsptmsetmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrominsptmsetmixrm_bdmprocmstmixrm_romprocmstmixrmcd` FOREIGN KEY (`rom_proc_mst_mixrm_cd`) REFERENCES `bdm_proc_mst_mixrm` (`proc_mst_mixrm_id`),
+  CONSTRAINT `fk_bdmrominsptmsetmixrm_bdmrominspmixrm_romprocmstmixrmcd` FOREIGN KEY (`rom_inspect_mixrm_id`) REFERENCES `bdm_rom_insp_mixrm` (`rom_insp_mixrm_id`),
+  CONSTRAINT `fk_bdmrominsptmsetmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominsptmsetmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrominsptmsetmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_insp_tmset_mixrm`
+--
+
+LOCK TABLES `bdm_rom_insp_tmset_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_insp_tmset_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_insp_tmset_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_mnl`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_mnl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_mnl` (
+  `rom_mnl_id` varchar(20) NOT NULL,
+  `rom_insp_id` varchar(20) NOT NULL,
+  `manual_nm` varchar(20) DEFAULT NULL,
+  `manual_txt` text DEFAULT NULL,
+  `manual_path` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_mnl_id`),
+  KEY `fk_bdmrommnl_bdmdpuinsp_rominspid` (`rom_insp_id`),
+  KEY `fk_bdmrommnl_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrommnl_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrommnl_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrommnl_bdmdpuinsp_rominspid` FOREIGN KEY (`rom_insp_id`) REFERENCES `bdm_dpu_insp` (`insp_id`),
+  CONSTRAINT `fk_bdmrommnl_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrommnl_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrommnl_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_mnl`
+--
+
+LOCK TABLES `bdm_rom_mnl` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_mnl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_mnl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_mnl_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_mnl_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_mnl_mixrm` (
+  `rom_mixrm_id` varchar(20) NOT NULL,
+  `rom_insp_mixrm_id` varchar(20) NOT NULL,
+  `manual_nm` varchar(20) DEFAULT NULL,
+  `manual_txt` text DEFAULT NULL,
+  `manual_path` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_mixrm_id`),
+  KEY `fk_bdmrommnlmixrm_bdmdpuinsp_rominspmixrmid` (`rom_insp_mixrm_id`),
+  KEY `fk_bdmrommnlmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmrommnlmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmrommnlmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmrommnlmixrm_bdmdpuinsp_rominspmixrmid` FOREIGN KEY (`rom_insp_mixrm_id`) REFERENCES `bdm_dpu_insp` (`insp_id`),
+  CONSTRAINT `fk_bdmrommnlmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrommnlmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmrommnlmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_mnl_mixrm`
+--
+
+LOCK TABLES `bdm_rom_mnl_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_mnl_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_mnl_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_proc_mgnt`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_proc_mgnt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_proc_mgnt` (
+  `rom_proc_mgnt_id` varchar(20) NOT NULL,
+  `proc_mst_id` varchar(20) NOT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_proc_mgnt_id`),
+  KEY `fk_bdmromprocmgnt_bdmprocmst_procmstid` (`proc_mst_id`),
+  KEY `fk_bdmromprocmgnt_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmromprocmgnt_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmromprocmgnt_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmromprocmgnt_bdmprocmst_procmstid` FOREIGN KEY (`proc_mst_id`) REFERENCES `bdm_proc_mst` (`proc_mst_id`),
+  CONSTRAINT `fk_bdmromprocmgnt_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmromprocmgnt_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmromprocmgnt_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_proc_mgnt`
+--
+
+LOCK TABLES `bdm_rom_proc_mgnt` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_proc_mgnt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_proc_mgnt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_proc_mgnt_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_proc_mgnt_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_proc_mgnt_mixrm` (
+  `rom_proc_mgnt_mixrm_id` varchar(20) NOT NULL,
+  `proc_mst_mixrm_id` varchar(20) NOT NULL,
+  `paint_nm` varchar(20) DEFAULT NULL,
+  `insp_nm` varchar(20) DEFAULT NULL,
+  `unit_cd` varchar(20) DEFAULT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_proc_mgnt_mixrm_id`),
+  KEY `fk_bdmromprocmgntmixrm_bdmprocmstmixrm_procmstmixrmid` (`proc_mst_mixrm_id`),
+  KEY `fk_bdmromprocmgntmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmromprocmgntmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmromprocmgntmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmromprocmgntmixrm_bdmprocmstmixrm_procmstmixrmid` FOREIGN KEY (`proc_mst_mixrm_id`) REFERENCES `bdm_proc_mst_mixrm` (`proc_mst_mixrm_id`),
+  CONSTRAINT `fk_bdmromprocmgntmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmromprocmgntmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmromprocmgntmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_proc_mgnt_mixrm`
+--
+
+LOCK TABLES `bdm_rom_proc_mgnt_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_proc_mgnt_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_proc_mgnt_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_rom_proc_tmset`
+--
+
+DROP TABLE IF EXISTS `bdm_rom_proc_tmset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_rom_proc_tmset` (
+  `tmset_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `rom_proc_mgnt_id` varchar(20) NOT NULL,
+  `rom_inspect_id` varchar(20) NOT NULL,
+  `insp_res_seq` int(11) DEFAULT NULL,
+  `work_day_id` varchar(20) NOT NULL,
+  `shift_seq` int(11) DEFAULT NULL,
+  `st_dttm` int(11) DEFAULT NULL,
+  `end_dttm` int(11) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`tmset_id`),
+  KEY `fk_bdmromproctmset_bdmromprocmgnt_romprocmgntid` (`rom_proc_mgnt_id`),
+  KEY `fk_bdmromproctmset_bdmworkday_workdayid` (`work_day_id`),
+  KEY `fk_dmromproctmset_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_dmromproctmset_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_dmromproctmset_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmromproctmset_bdmromprocmgnt_romprocmgntid` FOREIGN KEY (`rom_proc_mgnt_id`) REFERENCES `bdm_rom_proc_mgnt` (`rom_proc_mgnt_id`),
+  CONSTRAINT `fk_bdmromproctmset_bdmworkday_workdayid` FOREIGN KEY (`work_day_id`) REFERENCES `bdm_work_day` (`work_day_id`),
+  CONSTRAINT `fk_dmromproctmset_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_dmromproctmset_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_dmromproctmset_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_rom_proc_tmset`
+--
+
+LOCK TABLES `bdm_rom_proc_tmset` WRITE;
+/*!40000 ALTER TABLE `bdm_rom_proc_tmset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_rom_proc_tmset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_smm_insp`
+--
+
+DROP TABLE IF EXISTS `bdm_smm_insp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_smm_insp` (
+  `smm_insp_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) DEFAULT NULL,
+  `proc_cd` varchar(20) DEFAULT NULL,
+  `smm_type_nm` varchar(20) DEFAULT NULL,
+  `smm_prod_nm` varchar(20) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dt` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`smm_insp_id`),
+  UNIQUE KEY `smm_insp_id` (`smm_insp_id`),
+  KEY `fk_bdmsmminsp_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmsmminsp_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmsmminsp_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmsmminsp_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmminsp_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmminsp_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_smm_insp`
+--
+
+LOCK TABLES `bdm_smm_insp` WRITE;
+/*!40000 ALTER TABLE `bdm_smm_insp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_smm_insp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_smm_insp_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_smm_insp_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_smm_insp_mixrm` (
+  `smm_insp_mixrm_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `sub_proc_cd` varchar(20) NOT NULL,
+  `smm_prod_nm` varchar(20) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`smm_insp_mixrm_id`),
+  KEY `fk_bdmsmminspmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmsmminspmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmsmminspmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmsmminspmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmminspmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmminspmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_smm_insp_mixrm`
+--
+
+LOCK TABLES `bdm_smm_insp_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_smm_insp_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_smm_insp_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_smm_mnl`
+--
+
+DROP TABLE IF EXISTS `bdm_smm_mnl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_smm_mnl` (
+  `smm_mnl_id` varchar(20) NOT NULL,
+  `smm_insp_cd` varchar(20) NOT NULL,
+  `manual_nm` varchar(20) DEFAULT NULL,
+  `manual_txt` text DEFAULT NULL,
+  `manual_path` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`smm_mnl_id`),
+  KEY `fk_bdmsmmmnl_bdmsmminsp_smminspcd` (`smm_insp_cd`),
+  KEY `fk_bdmsmmmnl_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmsmmmnl_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmsmmmnl_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmsmmmnl_bdmsmminsp_smminspcd` FOREIGN KEY (`smm_insp_cd`) REFERENCES `bdm_smm_insp` (`smm_insp_id`),
+  CONSTRAINT `fk_bdmsmmmnl_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmmmnl_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmmmnl_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_smm_mnl`
+--
+
+LOCK TABLES `bdm_smm_mnl` WRITE;
+/*!40000 ALTER TABLE `bdm_smm_mnl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_smm_mnl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_smm_mnl_mixrm`
+--
+
+DROP TABLE IF EXISTS `bdm_smm_mnl_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_smm_mnl_mixrm` (
+  `mnl_mixrm_id` varchar(20) NOT NULL,
+  `smm_insp_mixrm_id` varchar(20) NOT NULL,
+  `manual_nm` varchar(20) DEFAULT NULL,
+  `manual_txt` text DEFAULT NULL,
+  `manual_path` varchar(200) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`mnl_mixrm_id`),
+  KEY `fk_bdmsmmmnlmixrm_bdmsmminspmixrm_smminspmixrmid` (`smm_insp_mixrm_id`),
+  KEY `fk_bdmsmmmnlmixrm_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmsmmmnlmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmsmmmnlmixrm_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmsmmmnlmixrm_bdmsmminspmixrm_smminspmixrmid` FOREIGN KEY (`smm_insp_mixrm_id`) REFERENCES `bdm_smm_insp_mixrm` (`smm_insp_mixrm_id`),
+  CONSTRAINT `fk_bdmsmmmnlmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmmmnlmixrm_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmsmmmnlmixrm_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_smm_mnl_mixrm`
+--
+
+LOCK TABLES `bdm_smm_mnl_mixrm` WRITE;
+/*!40000 ALTER TABLE `bdm_smm_mnl_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_smm_mnl_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_user_tsk`
+--
+
+DROP TABLE IF EXISTS `bdm_user_tsk`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_user_tsk` (
+  `user_tsk_id` varchar(20) NOT NULL,
+  `bdm_user_tskmn_id` varchar(20) NOT NULL,
+  `cgtsk_cd` varchar(20) NOT NULL,
+  `cgproc_cd` varchar(20) NOT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`user_tsk_id`),
+  KEY `fk_bdmusertsk_bdmusertskmn_bdmusertskmnid` (`bdm_user_tskmn_id`),
+  KEY `fk_bdmusertsk_bdmmenumgnt_cgtskcd` (`cgtsk_cd`),
+  KEY `fk_bdmusertsk_bdmmenumgnt_cgproccd` (`cgproc_cd`),
+  KEY `fk_bdmusertsk_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmusertsk_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmusertsk_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmusertsk_bdmmenumgnt_cgproccd` FOREIGN KEY (`cgproc_cd`) REFERENCES `bdm_menu_mgnt` (`menu_mgnt_id`),
+  CONSTRAINT `fk_bdmusertsk_bdmmenumgnt_cgtskcd` FOREIGN KEY (`cgtsk_cd`) REFERENCES `bdm_menu_mgnt` (`menu_mgnt_id`),
+  CONSTRAINT `fk_bdmusertsk_bdmusertskmn_bdmusertskmnid` FOREIGN KEY (`bdm_user_tskmn_id`) REFERENCES `bdm_user_tskmn` (`user_tskmn_id`),
+  CONSTRAINT `fk_bdmusertsk_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmusertsk_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmusertsk_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_user_tsk`
+--
+
+LOCK TABLES `bdm_user_tsk` WRITE;
+/*!40000 ALTER TABLE `bdm_user_tsk` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_user_tsk` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_user_tskmn`
+--
+
+DROP TABLE IF EXISTS `bdm_user_tskmn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_user_tskmn` (
+  `user_tskmn_id` varchar(20) NOT NULL,
+  `tsk_grnt_yn` char(1) DEFAULT NULL,
+  `emp_no` varchar(20) DEFAULT NULL,
+  `role_mgnt_id` varchar(20) NOT NULL,
+  `grnt_dttm` datetime DEFAULT NULL,
+  `proc_user_id` varchar(20) DEFAULT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`user_tskmn_id`),
+  KEY `fk_bdmusertskmn_sysrolemgnt_rolemgntid` (`role_mgnt_id`),
+  KEY `fk_bdmusertskmn_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmusertskmn_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmusertskmn_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmusertskmn_sysrolemgnt_rolemgntid` FOREIGN KEY (`role_mgnt_id`) REFERENCES `sys_role_mgnt` (`role_mgnt_id`),
+  CONSTRAINT `fk_bdmusertskmn_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_user_tskmn`
+--
+
+LOCK TABLES `bdm_user_tskmn` WRITE;
+/*!40000 ALTER TABLE `bdm_user_tskmn` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_user_tskmn` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_vehl_mgnt`
+--
+
+DROP TABLE IF EXISTS `bdm_vehl_mgnt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_vehl_mgnt` (
+  `vehl_mgnt_id` varchar(20) NOT NULL,
+  `vehl_mst_cd` varchar(20) NOT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`vehl_mgnt_id`),
+  KEY `fk_bdmvehlmgnt_bdmvehlmst_vehlmstcd` (`vehl_mst_cd`),
+  KEY `fk_bdmvehlmgnt_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmvehlmgnt_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmvehlmgnt_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmvehlmgnt_bdmvehlmst_vehlmstcd` FOREIGN KEY (`vehl_mst_cd`) REFERENCES `bdm_vehl_mst` (`vehl_cd`),
+  CONSTRAINT `fk_bdmvehlmgnt_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmvehlmgnt_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmvehlmgnt_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_vehl_mgnt`
+--
+
+LOCK TABLES `bdm_vehl_mgnt` WRITE;
+/*!40000 ALTER TABLE `bdm_vehl_mgnt` DISABLE KEYS */;
+INSERT INTO `bdm_vehl_mgnt` VALUES ('bvm1','testvehlcdUp2',NULL,'1112222',NULL,NULL,'testshopcd','cd');
+/*!40000 ALTER TABLE `bdm_vehl_mgnt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_vehl_mst`
+--
+
+DROP TABLE IF EXISTS `bdm_vehl_mst`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_vehl_mst` (
+  `vehl_cd` varchar(20) NOT NULL,
+  `vehl_nmkr` varchar(20) NOT NULL,
+  `vehl_nmen` varchar(20) NOT NULL,
+  `model_cd` varchar(20) DEFAULT NULL,
+  `prj_vehl_cd` varchar(20) DEFAULT NULL,
+  `st_dttm` date DEFAULT NULL,
+  `end_dttm` date DEFAULT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dt` date DEFAULT NULL,
+  PRIMARY KEY (`vehl_cd`),
+  KEY `fk_bdmvehlmst_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmvehlmst_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmvehlmst_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmvehlmst_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_vehl_mst`
+--
+
+LOCK TABLES `bdm_vehl_mst` WRITE;
+/*!40000 ALTER TABLE `bdm_vehl_mst` DISABLE KEYS */;
+INSERT INTO `bdm_vehl_mst` VALUES ('testvehlcdUp2','테스트차량','test vehl',NULL,NULL,NULL,NULL,NULL,'1112222',NULL,NULL);
+/*!40000 ALTER TABLE `bdm_vehl_mst` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bdm_work_day`
+--
+
+DROP TABLE IF EXISTS `bdm_work_day`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bdm_work_day` (
+  `work_day_id` varchar(20) NOT NULL,
+  `dsgn_dt` date NOT NULL,
+  `holi_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `comp_cd` varchar(20) DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`work_day_id`),
+  KEY `fk_bdmworkday_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmworkday_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_bdmworkday_bdmcomp_compcd` (`comp_cd`),
+  KEY `fk_bdmworkday_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_bdmworkday_bdmcomp_compcd` FOREIGN KEY (`comp_cd`) REFERENCES `bdm_comp` (`comp_cd`),
+  CONSTRAINT `fk_bdmworkday_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmworkday_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmworkday_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bdm_work_day`
+--
+
+LOCK TABLES `bdm_work_day` WRITE;
+/*!40000 ALTER TABLE `bdm_work_day` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bdm_work_day` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_anl`
+--
+
+DROP TABLE IF EXISTS `clm_insp_anl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_anl` (
+  `clm_insp_anl_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `clm_cd` varchar(20) NOT NULL,
+  `clm_insp_nm` varchar(100) NOT NULL,
+  `period_tcd` char(1) DEFAULT NULL,
+  `cnt_no` int(11) DEFAULT NULL,
+  `month_no` int(11) DEFAULT NULL,
+  `day_no` int(11) DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_anl_id`),
+  KEY `fk_bdmclminspanl_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmclminspanl_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmclminspanl_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmclminspanl_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_anl`
+--
+
+LOCK TABLES `clm_insp_anl` WRITE;
+/*!40000 ALTER TABLE `clm_insp_anl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_anl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_day`
+--
+
+DROP TABLE IF EXISTS `clm_insp_day`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_day` (
+  `clm_insp_day_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `clm_cd` varchar(20) NOT NULL,
+  `clm_insp_nm` varchar(100) NOT NULL,
+  `period_tcd` char(1) NOT NULL,
+  `st_dttm` datetime DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_day_id`),
+  KEY `fk_clminspday_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_clminspday_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_clminspday_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_clminspday_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_clminspday_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_clminspday_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_day`
+--
+
+LOCK TABLES `clm_insp_day` WRITE;
+/*!40000 ALTER TABLE `clm_insp_day` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_day` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_mon`
+--
+
+DROP TABLE IF EXISTS `clm_insp_mon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_mon` (
+  `clm_insp_mon_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `clm_cd` varchar(20) NOT NULL,
+  `clm_insp_nm` varchar(100) NOT NULL,
+  `period_tcd` char(1) DEFAULT NULL,
+  `period_nm` int(11) DEFAULT NULL,
+  `cnt_no` int(11) DEFAULT NULL,
+  `date_no` varchar(20) DEFAULT NULL,
+  `st_dttm` datetime DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `equip_cd` varchar(20) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_mon_id`),
+  KEY `fk_bdmclminspmon_bdmequipbas_equipcd` (`equip_cd`),
+  KEY `fk_bdmclminspmon_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmclminspmon_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmclminspmon_bdmequipbas_equipcd` FOREIGN KEY (`equip_cd`) REFERENCES `bdm_equip_bas` (`equip_id`),
+  CONSTRAINT `fk_bdmclminspmon_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmclminspmon_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_mon`
+--
+
+LOCK TABLES `clm_insp_mon` WRITE;
+/*!40000 ALTER TABLE `clm_insp_mon` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_mon` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_quat`
+--
+
+DROP TABLE IF EXISTS `clm_insp_quat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_quat` (
+  `clm_insp_quat_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `clm_cd` varchar(20) NOT NULL,
+  `clm_insp_nm` varchar(100) NOT NULL,
+  `period_tcd` char(1) DEFAULT NULL,
+  `cnt_no` int(11) DEFAULT NULL,
+  `st_dttm` datetime DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_quat_id`),
+  KEY `fk_bdmclminspquat_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmclminspquat_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmclminspquat_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmclminspquat_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_quat`
+--
+
+LOCK TABLES `clm_insp_quat` WRITE;
+/*!40000 ALTER TABLE `clm_insp_quat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_quat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_res`
+--
+
+DROP TABLE IF EXISTS `clm_insp_res`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_res` (
+  `clm_insp_res_id` varchar(20) NOT NULL,
+  `date_dt` datetime NOT NULL,
+  `clm_insp_cd` varchar(20) NOT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `done_yn` char(1) DEFAULT NULL,
+  `img_pack_id` int(11) DEFAULT NULL,
+  `clm_period_cd` varchar(20) NOT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_res_id`),
+  KEY `fk_clminspres_sysfilepack_imgpackid` (`img_pack_id`),
+  KEY `fk_clminspres_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_clminspres_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_clminspres_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_clminspres_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_clminspres_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_clminspres_sysfilepack_imgpackid` FOREIGN KEY (`img_pack_id`) REFERENCES `sys_file_pack` (`file_pack_id`),
+  CONSTRAINT `fk_clminspres_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_res`
+--
+
+LOCK TABLES `clm_insp_res` WRITE;
+/*!40000 ALTER TABLE `clm_insp_res` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_res` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_sanl`
+--
+
+DROP TABLE IF EXISTS `clm_insp_sanl`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_sanl` (
+  `clm_insp_sanl_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `clm_cd` varchar(20) NOT NULL,
+  `clm_insp_nm` varchar(100) NOT NULL,
+  `period_tcd` char(1) DEFAULT NULL,
+  `cnt_no` int(11) DEFAULT NULL,
+  `st_dttm` datetime DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_sanl_id`),
+  KEY `fk_bdmclminspsanl_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmclminspsanl_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmclminspsanl_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmclminspsanl_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_sanl`
+--
+
+LOCK TABLES `clm_insp_sanl` WRITE;
+/*!40000 ALTER TABLE `clm_insp_sanl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_sanl` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_insp_week`
+--
+
+DROP TABLE IF EXISTS `clm_insp_week`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_insp_week` (
+  `clm_insp_week_id` varchar(20) NOT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `clm_cd` varchar(20) NOT NULL,
+  `clm_insp_nm` varchar(100) NOT NULL,
+  `period_tcd` char(1) NOT NULL,
+  `peroid_nm` int(11) DEFAULT NULL,
+  `cnt_no` int(11) DEFAULT NULL,
+  `date_nm` varchar(20) DEFAULT NULL,
+  `st_dttm` datetime DEFAULT NULL,
+  `empha_yn` char(1) DEFAULT NULL,
+  `manual_yn` char(1) DEFAULT NULL,
+  `worker_cnt` int(11) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_insp_week_id`),
+  KEY `fk_bdmclminspweek_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_bdmclminspweek_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_bdmclminspweek_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_bdmclminspweek_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_insp_week`
+--
+
+LOCK TABLES `clm_insp_week` WRITE;
+/*!40000 ALTER TABLE `clm_insp_week` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_insp_week` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_proc_mst`
+--
+
+DROP TABLE IF EXISTS `clm_proc_mst`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_proc_mst` (
+  `proc_mst_id` varchar(20) NOT NULL,
+  `proc_nm` varchar(20) NOT NULL,
+  `proc_nm_en` varchar(20) NOT NULL,
+  `clean_nm` varchar(20) NOT NULL,
+  `clean_nm_en` varchar(20) NOT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`proc_mst_id`),
+  KEY `fk_clmprocmst_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_clmprocmst_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_clmprocmst_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_clmprocmst_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_proc_mst`
+--
+
+LOCK TABLES `clm_proc_mst` WRITE;
+/*!40000 ALTER TABLE `clm_proc_mst` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_proc_mst` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clm_work_day`
+--
+
+DROP TABLE IF EXISTS `clm_work_day`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `clm_work_day` (
+  `clm_work_day_id` varchar(20) NOT NULL,
+  `dsgn_dt` date NOT NULL,
+  `holi_yn` char(1) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `comp_cd` varchar(20) NOT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`clm_work_day_id`),
+  KEY `fk_clmworkday_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_clmworkday_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_clmworkday_bdmcomp_compcd` (`comp_cd`),
+  CONSTRAINT `fk_clmworkday_bdmcomp_compcd` FOREIGN KEY (`comp_cd`) REFERENCES `bdm_comp` (`comp_cd`),
+  CONSTRAINT `fk_clmworkday_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_clmworkday_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clm_work_day`
+--
+
+LOCK TABLES `clm_work_day` WRITE;
+/*!40000 ALTER TABLE `clm_work_day` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clm_work_day` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dpu_insp_res`
+--
+
+DROP TABLE IF EXISTS `dpu_insp_res`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dpu_insp_res` (
+  `dpu_res_id` varchar(20) NOT NULL,
+  `dpu_insp_id` varchar(20) DEFAULT NULL,
+  `vin_no` varchar(20) DEFAULT NULL,
+  `deffect_cnt` int(11) DEFAULT NULL,
+  `vehl_part_tcd` char(2) DEFAULT NULL,
+  `insp_dttm` datetime DEFAULT NULL,
+  `vehl_cd` varchar(22) DEFAULT NULL,
+  `direct_tcd` char(2) DEFAULT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dt` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`dpu_res_id`),
+  KEY `fk_dpuinspres_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_dpuinspres_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_dpuinspres_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_dpuinspres_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_dpuinspres_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_dpuinspres_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dpu_insp_res`
+--
+
+LOCK TABLES `dpu_insp_res` WRITE;
+/*!40000 ALTER TABLE `dpu_insp_res` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dpu_insp_res` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ei_org_bas`
+--
+
+DROP TABLE IF EXISTS `ei_org_bas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ei_org_bas` (
+  `gubun` varchar(20) DEFAULT NULL,
+  `dept_cd` varchar(100) NOT NULL,
+  `dept_sht_cd` varchar(100) DEFAULT NULL,
+  `dept_nm` varchar(400) DEFAULT NULL,
+  `dept_eng_nm` varchar(400) DEFAULT NULL,
+  `upp_dept_cd` varchar(100) DEFAULT NULL,
+  `upp_dept_sht_cd` varchar(100) DEFAULT NULL,
+  `upp_dept_sht_nm` varchar(400) DEFAULT NULL,
+  `upp_dept_eng_nm` varchar(400) DEFAULT NULL,
+  `company_cd` varchar(100) DEFAULT NULL,
+  `company_nm` varchar(100) DEFAULT NULL,
+  `dept_mngr_user_no` varchar(100) DEFAULT NULL,
+  `dept_mngr_user_nm` varchar(400) DEFAULT NULL,
+  `location_cd` varchar(100) DEFAULT NULL,
+  `location_nm` varchar(400) DEFAULT NULL,
+  `location_eng_nm` varchar(400) DEFAULT NULL,
+  `dept_grade_cd` varchar(100) DEFAULT NULL,
+  `dept_ord` varchar(100) DEFAULT NULL,
+  `create_y` varchar(20) DEFAULT NULL,
+  `delete_y` varchar(20) DEFAULT NULL,
+  `chg_type` varchar(20) DEFAULT NULL,
+  `use_flg` varchar(1) DEFAULT NULL,
+  `chg_dttm` date DEFAULT NULL,
+  PRIMARY KEY (`dept_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ei_org_bas`
+--
+
+LOCK TABLES `ei_org_bas` WRITE;
+/*!40000 ALTER TABLE `ei_org_bas` DISABLE KEYS */;
+INSERT INTO `ei_org_bas` VALUES (NULL,'comcd',NULL,'회사명','company name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(NULL,'corpcd',NULL,'법인명','corporation name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(NULL,'deptcd',NULL,'부서명','dept name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(NULL,'testcd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(NULL,'THLD',NULL,'도장3부',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(NULL,'TJDF',NULL,'도장생기3팀',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `ei_org_bas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ei_user_info`
+--
+
+DROP TABLE IF EXISTS `ei_user_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ei_user_info` (
+  `user_id` varchar(20) DEFAULT NULL,
+  `emp_no` varchar(20) NOT NULL,
+  `company_cd` varchar(20) NOT NULL,
+  `company_nm` varchar(100) DEFAULT NULL,
+  `pwd_enc` varchar(200) DEFAULT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `name_en` varchar(100) DEFAULT NULL,
+  `email` varchar(256) DEFAULT NULL,
+  `emp_type` varchar(30) DEFAULT NULL,
+  `dept_cd` varchar(20) DEFAULT NULL,
+  `dept_nm` varchar(100) DEFAULT NULL,
+  `dept_sht_cd` varchar(20) DEFAULT NULL,
+  `end_dept_cd` varchar(20) DEFAULT NULL,
+  `end_dept_nm` varchar(100) DEFAULT NULL,
+  `end_dept_sht_cd` varchar(20) DEFAULT NULL,
+  `dept_grd_nm` varchar(100) DEFAULT NULL,
+  `job_grp_cd` varchar(20) DEFAULT NULL,
+  `job_grp_nm` varchar(100) DEFAULT NULL,
+  `duty_cd` varchar(20) DEFAULT NULL,
+  `duty_nm` varchar(100) DEFAULT NULL,
+  `pos_cd` varchar(20) DEFAULT NULL,
+  `pos_nm` varchar(100) DEFAULT NULL,
+  `grd_cd` varchar(20) DEFAULT NULL,
+  `grd_nm` varchar(100) DEFAULT NULL,
+  `job_cd` varchar(20) DEFAULT NULL,
+  `job_nm` varchar(100) DEFAULT NULL,
+  `appn_cd` varchar(20) DEFAULT NULL,
+  `appn_grd_cd` varchar(20) DEFAULT NULL,
+  `appn_nm` varchar(100) DEFAULT NULL,
+  `loc_cd` varchar(20) DEFAULT NULL,
+  `loc_nm` varchar(100) DEFAULT NULL,
+  `corp_cd` varchar(10) DEFAULT NULL,
+  `start_ymd` varchar(20) DEFAULT NULL,
+  `retire_ymd` varchar(20) DEFAULT NULL,
+  `retire_yn` varchar(1) DEFAULT NULL,
+  `rest_yn` varchar(1) DEFAULT NULL,
+  `mas_ymd` varchar(20) DEFAULT NULL,
+  `officephone` varchar(50) DEFAULT NULL,
+  `cellphone` varchar(50) DEFAULT NULL,
+  `kostl` varchar(30) DEFAULT NULL,
+  `otp_yn` varchar(1) DEFAULT NULL,
+  `ledger_kind` varchar(20) DEFAULT NULL,
+  `sso_grd_cd` varchar(20) DEFAULT NULL,
+  `ac_use_yn` varchar(1) DEFAULT NULL,
+  `ac_reg_dtt` date DEFAULT NULL,
+  `ac_chg_dttm` date DEFAULT NULL,
+  UNIQUE KEY `emp_no` (`emp_no`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ei_user_info`
+--
+
+LOCK TABLES `ei_user_info` WRITE;
+/*!40000 ALTER TABLE `ei_user_info` DISABLE KEYS */;
+INSERT INTO `ei_user_info` VALUES ('1112222','1112222','1000','현대자동차','0000','길동','홍','홍길동','Hong Gil Dong','111222@hyundai.com',NULL,'TLHD','도장 3부',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,' A2','매니저',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'n',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2023-05-16','2023-05-16'),('111223','111223','1000','현대자동차','0000','길동','김','김길동','Kim Gil Dong','111223@hyundai.com',NULL,'TLHD','도장3부',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'A3','책임매니저',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'n',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2023-05-16','2023-05-16'),('111224','111224','1001','기아','0000','길동','박','박길동','Park Gil Dong','111224@hyundai.com',NULL,'TJDF','도장생기3팀',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'n',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2023-05-16','2023-05-16');
+/*!40000 ALTER TABLE `ei_user_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `refresh_token`
+--
+
+DROP TABLE IF EXISTS `refresh_token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `refresh_token` (
+  `token` text NOT NULL,
+  UNIQUE KEY `token` (`token`) USING HASH
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `refresh_token`
+--
+
+LOCK TABLES `refresh_token` WRITE;
+/*!40000 ALTER TABLE `refresh_token` DISABLE KEYS */;
+INSERT INTO `refresh_token` VALUES ('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQyOTk3NjUsImV4cCI6MTY4MjU5Njc5OH0.4Bmu2CwQesa_q_aq17niBE2CxyHZLMF4OA_hmaLHxrk'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQyOTk4MzQsImV4cCI6MTY4MjU5Njg2N30._wqD5TtuRH6RtDWP7knwny7rjHpR4YWOYhCZJ5JmJwU'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQyOTk4ODAsImV4cCI6MTY4MjU5NjkxM30.b1H9vCIjm28dELRibmewdT_8br58c93YC0pJpBeqW-0'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQyOTk5MjksImV4cCI6MTY4MjU5Njk2Mn0.BHsKK4CZAV_ylD2xKxn9wvD-2wUqVLG8w7PQv9i4lto'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMDAwMjEsImV4cCI6MTY4MjU5NzA1M30.pJuKqrwEZo7dtYLxujaCcrA8gXsXsWttPSG9Y_QNgVU'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMDAzMjIsImV4cCI6MTY4MjU5NzM1NX0.Pps7au_UvxmVTOGQWFUTvfRWA_u8iaQwptsm4Q2ZsX8'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMDE3ODMsImV4cCI6MTY4Njg5Mzc4M30.Q4D13s0fcio-XYAYSYoy7lFaAaklOXfkrhHBlLibaJs'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMDIzMjQsImV4cCI6MTY4Njg5NDMyNH0.KSM9haroN430I_TKRVpC3MNq6lApD9NTa9U_gWmFENU'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMDI0NzEsImV4cCI6MTY4Njg5NDQ3MX0.CYjcKiJBswljQsFUvtCEQpFQWicRSj6q5O_uPxyI5tw'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMDMxMTAsImV4cCI6MTY4Njg5NTExMH0.lteYtYH6BPxqtRJ3CC1lsURH06olEBUKKtIspdSUCLg'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQzMTUyMDgsImV4cCI6MTY4NjkwNzIwOH0.I_n0Zmlto56JV0ldCk93_HO4_VmLuYhBp8yKcDe3MfQ'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0NTk4NjksImV4cCI6MTY4NzA1MTg2OX0.-DAwxUAZhPpf0DMRgkpeb7LdolzN4B8oA9PNvWBmt9g'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0NTk5OTUsImV4cCI6MTY4NzA1MTk5NX0.opELa1wrYD-qcgC-AvalLTVKnnnChBBxUhfhNii44s4'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0Njc1NTYsImV4cCI6MTY4NzA1OTU1Nn0.xTIjH2CW9dq0wTyb8XTuVE8X2fXskxGHhvOn1bjyj5M'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0Njc1ODcsImV4cCI6MTY4NzA1OTU4N30.2kgC9ElZWE1Z8iCXIejc3-CbYFlZqhHazpz8-1n1_qw'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0Njc2NzAsImV4cCI6MTY4NzA1OTY3MH0._W78eTkcCO8nMwsZDy1ZGumRtXZfZ4e49YPcx0qEHRc'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0Njc3NjUsImV4cCI6MTY4NzA1OTc2NX0.i8jrKiEzmH9a2bpr0xlsFkKeFuVVC23TDPESAntjtk8'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ0NzAzMDksImV4cCI6MTY4NzA2MjMwOX0.DGdiMT8-hkY5cLaj7aeuqCCQ9YB92DY-ONG8k7KosQE'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ1MDAyNTksImV4cCI6MTY4NzA5MjI1OX0.49bM6Tepx3sLEgZJQpZRG9qrwpiC0odctKzIPqisIVg'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ1MTA2MzEsImV4cCI6MTY4NzEwMjYzMX0.gNwws2vrQhVrZgDQlblHJPpQORx3CfPscHE-EwRR-2A'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ1MTA5ODEsImV4cCI6MTY4NzEwMjk4MX0.tWWv6YPVr6noCMS3Ow1nvIsLOKsTYV6hOE7JWfL7ckM'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ1MTEzODgsImV4cCI6MTY4NzEwMzM4OH0.I_coZ8KyOJ_pzyF29Zyfv6pYgepSKgmRS126ZhOyJxg'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ1MTE2ODUsImV4cCI6MTY4NzEwMzY4NX0.JWRjoDOl-ZUrT6f4ZDtv-DAJtPhXAQFQ-eMzyNYUj9k'),('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTEyMjMiLCJpYXQiOjE2ODQ1NTQ4MzYsImV4cCI6MTY4NzE0NjgzNn0.bT91W2sE9CiPjideiaH7zJII-0OstT8Ap9Y7T3_aj3A');
+/*!40000 ALTER TABLE `refresh_token` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rom_insp_res`
+--
+
+DROP TABLE IF EXISTS `rom_insp_res`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rom_insp_res` (
+  `rom_inspect_id` int(11) NOT NULL,
+  `insp_tmset_id` varchar(20) NOT NULL,
+  `day_value` float DEFAULT NULL,
+  `inspect_yn` char(1) DEFAULT NULL,
+  `done_yn` char(1) DEFAULT NULL,
+  `input_dttm` date DEFAULT NULL,
+  `input_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `vehl_nm` varchar(20) DEFAULT NULL,
+  `img_pack_id` int(11) DEFAULT NULL,
+  `detail` text DEFAULT NULL,
+  `ok_yn` char(1) DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  `rom_res_id` int(11) NOT NULL,
+  `date_dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`rom_res_id`),
+  KEY `fk_rominspres_bdmrominsptmset_insptmsetid` (`insp_tmset_id`),
+  KEY `fk_rominspres_eluserinfo_reguserid` (`input_user_id`),
+  KEY `fk_rominspres_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_rominspres_sysfilepack_imgpackid` (`img_pack_id`),
+  KEY `fk_rominspres_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_rominspres_bdmrominsptmset_insptmsetid` FOREIGN KEY (`insp_tmset_id`) REFERENCES `bdm_rom_insp_tmset` (`insp_tmset_id`),
+  CONSTRAINT `fk_rominspres_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_rominspres_eluserinfo_reguserid` FOREIGN KEY (`input_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_rominspres_sysfilepack_imgpackid` FOREIGN KEY (`img_pack_id`) REFERENCES `sys_file_pack` (`file_pack_id`),
+  CONSTRAINT `fk_rominspres_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rom_insp_res`
+--
+
+LOCK TABLES `rom_insp_res` WRITE;
+/*!40000 ALTER TABLE `rom_insp_res` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rom_insp_res` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rom_insp_res_mixrm`
+--
+
+DROP TABLE IF EXISTS `rom_insp_res_mixrm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rom_insp_res_mixrm` (
+  `rom_res_id` varchar(20) NOT NULL,
+  `date_dt` datetime DEFAULT NULL,
+  `insp_tmset_id` varchar(20) NOT NULL,
+  `rom_insp_mixrm_id` varchar(20) NOT NULL,
+  `res_val` float DEFAULT NULL,
+  `insp_period_no` int(11) DEFAULT NULL,
+  `detail_txt` varchar(200) DEFAULT NULL,
+  `inspect_yn` char(1) DEFAULT NULL,
+  `ok_yn` char(1) DEFAULT NULL,
+  `img_pack_id` int(11) DEFAULT NULL,
+  `vehl_nm` varchar(20) DEFAULT NULL,
+  `input_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`rom_res_id`),
+  KEY `fk_rominspresmixrm_bdmrominsptmset_insptmsetid` (`insp_tmset_id`),
+  KEY `fk_rominspresmixrm_bdmrominspmixrm_rominspmixrmid` (`rom_insp_mixrm_id`),
+  KEY `fk__rominspresmixrm_sysfilepack_imgpackid` (`img_pack_id`),
+  KEY `fk_rominspresmixrm_eluserinfo_reguserid` (`input_user_id`),
+  KEY `fk_rominspresmixrm_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk__rominspresmixrm_sysfilepack_imgpackid` FOREIGN KEY (`img_pack_id`) REFERENCES `sys_file_pack` (`file_pack_id`),
+  CONSTRAINT `fk_rominspresmixrm_bdmrominspmixrm_rominspmixrmid` FOREIGN KEY (`rom_insp_mixrm_id`) REFERENCES `bdm_rom_insp_mixrm` (`rom_insp_mixrm_id`),
+  CONSTRAINT `fk_rominspresmixrm_bdmrominsptmset_insptmsetid` FOREIGN KEY (`insp_tmset_id`) REFERENCES `bdm_rom_insp_tmset` (`insp_tmset_id`),
+  CONSTRAINT `fk_rominspresmixrm_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_rominspresmixrm_eluserinfo_reguserid` FOREIGN KEY (`input_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rom_insp_res_mixrm`
+--
+
+LOCK TABLES `rom_insp_res_mixrm` WRITE;
+/*!40000 ALTER TABLE `rom_insp_res_mixrm` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rom_insp_res_mixrm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `smm_insp_res`
+--
+
+DROP TABLE IF EXISTS `smm_insp_res`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `smm_insp_res` (
+  `smm_insp_res_id` varchar(20) NOT NULL,
+  `date_dt` date NOT NULL,
+  `smm_inspect_cd` varchar(20) NOT NULL,
+  `amount_out` int(11) DEFAULT NULL,
+  `month_out` int(11) DEFAULT NULL,
+  `amount_in` int(11) DEFAULT NULL,
+  `month_int` int(11) DEFAULT NULL,
+  `total_stock` int(11) DEFAULT NULL,
+  `reg_dttm` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`smm_insp_res_id`),
+  KEY `fk_smminspres_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_smminspres_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_smminspres_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_smminspres_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_smminspres_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_smminspres_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `smm_insp_res`
+--
+
+LOCK TABLES `smm_insp_res` WRITE;
+/*!40000 ALTER TABLE `smm_insp_res` DISABLE KEYS */;
+/*!40000 ALTER TABLE `smm_insp_res` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_com_cd`
+--
+
+DROP TABLE IF EXISTS `sys_com_cd`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_com_cd` (
+  `com_cd_id` varchar(20) NOT NULL,
+  `com_cd` varchar(20) NOT NULL,
+  `supi_com_cd_id` varchar(20) DEFAULT NULL,
+  `supi_com_cd` varchar(20) DEFAULT NULL,
+  `lang_cd` varchar(2) NOT NULL,
+  `code_nm` varchar(20) NOT NULL,
+  `desc_txt` varchar(100) DEFAULT NULL,
+  `manage_yn` char(1) DEFAULT NULL,
+  `sort_no` int(11) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `st_dttm` date DEFAULT NULL,
+  `end_dttm` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_com_cd`
+--
+
+LOCK TABLES `sys_com_cd` WRITE;
+/*!40000 ALTER TABLE `sys_com_cd` DISABLE KEYS */;
+INSERT INTO `sys_com_cd` VALUES ('child','CDTESTchild1','supiid','CDTESTPARENT2','kr','자식테스트코드3','테스트용 자식코드','y',1,'y','2023-12-18','2023-12-18'),('supiid','CDTESTPARENT2',NULL,NULL,'kr','부모테스트코드3','테스트용 부모코드','y',1,'y','2023-12-18','2023-12-18'),('poscdid','A3',NULL,NULL,'ko','A3직위코드',NULL,NULL,NULL,NULL,NULL,NULL),('poscdid','A3',NULL,NULL,'en','A3 Position Code',NULL,NULL,NULL,NULL,NULL,NULL),('child','CDTESTchild1','supiid','CDTESTPARENT2','kr','자식테스트코드3','테스트용 자식코드','y',1,'y','2023-12-18','2023-12-18'),('supiid','CDTESTPARENT2',NULL,NULL,'kr','부모테스트코드3','테스트용 부모코드','y',1,'y','2023-12-18','2023-12-18');
+/*!40000 ALTER TABLE `sys_com_cd` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_com_cd_req`
+--
+
+DROP TABLE IF EXISTS `sys_com_cd_req`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_com_cd_req` (
+  `com_cd_req_id` varchar(20) NOT NULL,
+  `popup_tcd` char(1) DEFAULT NULL,
+  `prog_cd` char(1) DEFAULT NULL,
+  `req_user_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `menu_cd` varchar(20) NOT NULL,
+  `detail_txt` varchar(100) DEFAULT NULL,
+  `proc_cd` varchar(20) NOT NULL,
+  `sub_proc_cd` varchar(20) NOT NULL,
+  `sub_proc_nm` varchar(20) NOT NULL,
+  `dpu_nm` varchar(20) NOT NULL,
+  `insp_nm` varchar(20) NOT NULL,
+  `unit_nm` varchar(20) DEFAULT NULL,
+  `reason_txt` varchar(200) DEFAULT NULL,
+  `req_fact_cd` varchar(20) NOT NULL,
+  PRIMARY KEY (`com_cd_req_id`),
+  KEY `fk_syscomcdreq_eluserinfo_requserid` (`req_user_id`),
+  KEY `fk_syscomcdreq_sysmenubas_menucd` (`menu_cd`),
+  CONSTRAINT `fk_syscomcdreq_eluserinfo_requserid` FOREIGN KEY (`req_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_syscomcdreq_sysmenubas_menucd` FOREIGN KEY (`menu_cd`) REFERENCES `sys_menu_bas` (`menu_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_com_cd_req`
+--
+
+LOCK TABLES `sys_com_cd_req` WRITE;
+/*!40000 ALTER TABLE `sys_com_cd_req` DISABLE KEYS */;
+INSERT INTO `sys_com_cd_req` VALUES ('comcdreqid1','P','N','111223','CDTESTchild1','testmenucd','기능테스트','CDTESTchild1','CDTESTchild1','subprocnm','dpunm','inspnm','unitnm','P','CDTESTchild1'),('comcdreqid2','P','N','111223','CDTESTchild1','testmenucd','기능테스트','CDTESTchild1','CDTESTchild1','subprocnm','dpunm','inspnm','unitnm','P','CDTESTchild1');
+/*!40000 ALTER TABLE `sys_com_cd_req` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_email_log`
+--
+
+DROP TABLE IF EXISTS `sys_email_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_email_log` (
+  `email_log_id` varchar(20) NOT NULL,
+  `send_dt` date DEFAULT NULL,
+  `send_res_cd` char(1) DEFAULT NULL,
+  `noti_type` varchar(5) DEFAULT NULL,
+  `recv_user_id` varchar(10) DEFAULT NULL,
+  `eml_addr` varchar(200) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `shop_cd` varchar(20) DEFAULT NULL,
+  `shop_tcd` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`email_log_id`),
+  KEY `fk_sysemaillog_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_sysemaillog_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_email_log`
+--
+
+LOCK TABLES `sys_email_log` WRITE;
+/*!40000 ALTER TABLE `sys_email_log` DISABLE KEYS */;
+INSERT INTO `sys_email_log` VALUES ('EML0001','1970-01-01','S','WARN','111223','my123@gmail.com','정기 점검 알림','testshopcd','pa'),('EML0002','1970-01-01','S','WARN','111223','my123@gmail.com','정기 점검 알림','testshopcd','pa');
+/*!40000 ALTER TABLE `sys_email_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_file_pack`
+--
+
+DROP TABLE IF EXISTS `sys_file_pack`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_file_pack` (
+  `file_id` int(11) NOT NULL,
+  `file_pack_id` int(11) NOT NULL,
+  `file_path` varchar(200) DEFAULT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`file_id`),
+  UNIQUE KEY `file_pack_id` (`file_pack_id`),
+  KEY `fk_smminspres_sysfilepack_reguserid` (`reg_user_id`),
+  KEY `fk_sysfilepack_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_smminspres_sysfilepack_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysfilepack_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_file_pack`
+--
+
+LOCK TABLES `sys_file_pack` WRITE;
+/*!40000 ALTER TABLE `sys_file_pack` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_file_pack` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_if_err_log`
+--
+
+DROP TABLE IF EXISTS `sys_if_err_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_if_err_log` (
+  `err_date` date DEFAULT NULL,
+  `err_desc` varchar(16000) DEFAULT NULL,
+  `err_cd` varchar(100) NOT NULL,
+  `hst_id` int(11) NOT NULL,
+  `id` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_if_err_log`
+--
+
+LOCK TABLES `sys_if_err_log` WRITE;
+/*!40000 ALTER TABLE `sys_if_err_log` DISABLE KEYS */;
+INSERT INTO `sys_if_err_log` VALUES ('2023-05-21','The column name is can not be resolved.','ERR404',1,'IEL0001');
+/*!40000 ALTER TABLE `sys_if_err_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_if_hst`
+--
+
+DROP TABLE IF EXISTS `sys_if_hst`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_if_hst` (
+  `hst_id` int(11) NOT NULL,
+  `if_id` int(11) NOT NULL,
+  `if_date` date DEFAULT NULL,
+  `if_row_cnt` int(11) DEFAULT NULL,
+  `if_org_cnt` int(11) DEFAULT NULL,
+  `if_err_cnt` int(11) DEFAULT NULL,
+  `updt_date` date DEFAULT NULL,
+  PRIMARY KEY (`hst_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_if_hst`
+--
+
+LOCK TABLES `sys_if_hst` WRITE;
+/*!40000 ALTER TABLE `sys_if_hst` DISABLE KEYS */;
+INSERT INTO `sys_if_hst` VALUES (1,1,'2023-05-20',1000,999,1,'2023-05-21');
+/*!40000 ALTER TABLE `sys_if_hst` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_if_mst`
+--
+
+DROP TABLE IF EXISTS `sys_if_mst`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_if_mst` (
+  `mst_id` int(11) NOT NULL,
+  `if_type` varchar(3) DEFAULT NULL,
+  `origin_sys` varchar(200) DEFAULT NULL,
+  `origin_object` varchar(60) DEFAULT NULL,
+  `if_cycle` int(11) DEFAULT NULL,
+  `origin_ip` varchar(20) DEFAULT NULL,
+  `loc_table_nm` varchar(100) DEFAULT NULL,
+  `adaptor_name` varchar(4000) DEFAULT NULL,
+  `dev_ip` varchar(20) DEFAULT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `pgm_id` varchar(10) DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dt` date DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`mst_id`),
+  KEY `fk_sysifmst_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_sysifmst_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_sysifmst_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_sysifmst_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysifmst_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysifmst_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_if_mst`
+--
+
+LOCK TABLES `sys_if_mst` WRITE;
+/*!40000 ALTER TABLE `sys_if_mst` DISABLE KEYS */;
+INSERT INTO `sys_if_mst` VALUES (1,'TY1','ORIGIN1','OBJECT1',1,'192.168.0.100','울산','AD1','192.168.0.200','2023-05-19',NULL,'111223','111223','2023-05-20','testshopcd','pa'),(2,'TY2','ORIGIN2','OBJECT2',2,'192.168.0.101','광주','AD2','192.168.0.201','2023-05-18',NULL,'111223','111223','2023-05-19','testshopcd2','cd');
+/*!40000 ALTER TABLE `sys_if_mst` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_menu_bas`
+--
+
+DROP TABLE IF EXISTS `sys_menu_bas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_menu_bas` (
+  `menu_cd` varchar(20) NOT NULL,
+  `lang_cd` varchar(3) NOT NULL,
+  `menu_nm` varchar(100) NOT NULL,
+  `level_no` int(11) DEFAULT NULL,
+  `sort_sn` int(11) DEFAULT NULL,
+  `screen_menu_yn` char(1) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `supi_menu_cd` varchar(12) DEFAULT NULL,
+  `pgm_id` varchar(10) DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dt` date DEFAULT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`menu_cd`),
+  KEY `fk_sysmenubas_self_supimenucd` (`supi_menu_cd`),
+  KEY `fk_sysmenubas_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_sysmenubas_eluserinfo_modiuserid` (`modi_user_id`),
+  CONSTRAINT `fk_sysmenubas_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysmenubas_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysmenubas_self_supimenucd` FOREIGN KEY (`supi_menu_cd`) REFERENCES `sys_menu_bas` (`menu_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_menu_bas`
+--
+
+LOCK TABLES `sys_menu_bas` WRITE;
+/*!40000 ALTER TABLE `sys_menu_bas` DISABLE KEYS */;
+INSERT INTO `sys_menu_bas` VALUES ('testmenucd','ko','테스트메뉴',NULL,NULL,NULL,NULL,NULL,NULL,'111223',NULL,NULL,NULL,'pa');
+/*!40000 ALTER TABLE `sys_menu_bas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_menu_log`
+--
+
+DROP TABLE IF EXISTS `sys_menu_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_menu_log` (
+  `log_sn` varchar(30) NOT NULL,
+  `user_id` varchar(20) NOT NULL,
+  `org_cd` varchar(10) NOT NULL,
+  `menu_cd` varchar(20) NOT NULL,
+  `func_cd` varchar(20) DEFAULT NULL,
+  `log_ymd` char(8) NOT NULL,
+  `log_dttm` datetime DEFAULT NULL,
+  `cnnc_ip_addr` varchar(50) DEFAULT NULL,
+  `loc_cd` char(1) DEFAULT NULL,
+  `nw_cd` char(1) DEFAULT NULL,
+  `log_contents` text DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`log_sn`),
+  KEY `fk_sysmenulog_eluserinfo_userid` (`user_id`),
+  KEY `fk_sysmenulog_eldeptinfo_orgcd` (`org_cd`),
+  KEY `fk_sysmenulog_sysmenubas_menucd` (`menu_cd`),
+  KEY `fk_sysmenulog_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_sysmenulog_eldeptinfo_orgcd` FOREIGN KEY (`org_cd`) REFERENCES `ei_org_bas` (`dept_cd`),
+  CONSTRAINT `fk_sysmenulog_eluserinfo_userid` FOREIGN KEY (`user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysmenulog_sysmenubas_menucd` FOREIGN KEY (`menu_cd`) REFERENCES `sys_menu_bas` (`menu_cd`),
+  CONSTRAINT `fk_sysmenulog_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_menu_log`
+--
+
+LOCK TABLES `sys_menu_log` WRITE;
+/*!40000 ALTER TABLE `sys_menu_log` DISABLE KEYS */;
+INSERT INTO `sys_menu_log` VALUES ('0000','111223','testcd','testmenucd',NULL,'230519',NULL,NULL,NULL,NULL,NULL,'testshopcd','pa');
+/*!40000 ALTER TABLE `sys_menu_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_msg`
+--
+
+DROP TABLE IF EXISTS `sys_msg`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_msg` (
+  `msg_id` varchar(22) NOT NULL,
+  `msg_tcd` varchar(5) DEFAULT NULL,
+  `msg_cd` varchar(20) NOT NULL,
+  `lang_cd` varchar(3) DEFAULT NULL,
+  `msg_kr` varchar(200) DEFAULT NULL,
+  `msg_en` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`msg_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_msg`
+--
+
+LOCK TABLES `sys_msg` WRITE;
+/*!40000 ALTER TABLE `sys_msg` DISABLE KEYS */;
+INSERT INTO `sys_msg` VALUES ('111',NULL,'111',NULL,NULL,NULL),('222',NULL,'222',NULL,NULL,NULL);
+/*!40000 ALTER TABLE `sys_msg` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_pgm_bas`
+--
+
+DROP TABLE IF EXISTS `sys_pgm_bas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_pgm_bas` (
+  `pgm_id` varchar(10) NOT NULL,
+  `lang_cd` varchar(3) NOT NULL,
+  `pgm_scn_cd` char(1) DEFAULT NULL,
+  `pgm_path_adr` varchar(256) DEFAULT NULL,
+  `pgm_nm` varchar(200) DEFAULT NULL,
+  `pgm_expl_sbc` varchar(1000) DEFAULT NULL,
+  `iq_auth_yn` char(1) DEFAULT NULL,
+  `inp_auth_yn` char(1) DEFAULT NULL,
+  `mdfy_auth_yn` char(1) DEFAULT NULL,
+  `del_auth_yn` char(1) DEFAULT NULL,
+  `oput_auth_yn` char(1) DEFAULT NULL,
+  `excl_auth_yn` char(1) DEFAULT NULL,
+  `upld_auth_yn` char(1) DEFAULT NULL,
+  `dnl_auth_yn` char(1) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `apl_strt_ymd` char(8) DEFAULT NULL,
+  `apl_fnh_ymd` char(8) DEFAULT NULL,
+  `reg_dttm` datetime DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dttm` datetime DEFAULT NULL,
+  `refresh_cycle` int(11) DEFAULT NULL,
+  `screen_id` varchar(15) DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`pgm_id`),
+  KEY `fk_syspgmbas_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_syspgmbas_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_syspgmbas_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_syspgmbas_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_syspgmbas_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_syspgmbas_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_pgm_bas`
+--
+
+LOCK TABLES `sys_pgm_bas` WRITE;
+/*!40000 ALTER TABLE `sys_pgm_bas` DISABLE KEYS */;
+INSERT INTO `sys_pgm_bas` VALUES ('pgmid','ko','y','/root','테스트프로그램','프로그램테스트','n','n','n','n','n','n','n','y','y','20230521','20230521','2023-05-20 18:12:13','111223',NULL,NULL,1,'P','testshopcd','pa'),('pgmid2','ko','y','/root','테스트프로그램','프로그램테스트','n','n','n','n','n','n','n','y','y','20230521','20230521','2023-05-20 18:12:13','111223',NULL,NULL,1,'P','testshopcd','pa');
+/*!40000 ALTER TABLE `sys_pgm_bas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_auth`
+--
+
+DROP TABLE IF EXISTS `sys_role_auth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_role_auth` (
+  `role_auth_id` varchar(20) NOT NULL,
+  `role_id` varchar(20) NOT NULL,
+  `menu_cd` varchar(20) NOT NULL,
+  `upmenu_cd` varchar(20) DEFAULT NULL,
+  `iq_auth_yn` char(1) DEFAULT NULL,
+  `mdfy_auth_yn` char(1) DEFAULT NULL,
+  `sav_auth_yn` char(1) DEFAULT NULL,
+  `del_auth_yn` char(1) DEFAULT NULL,
+  `oput_auth_yn` char(1) DEFAULT NULL,
+  `excl_auth_yn` char(1) DEFAULT NULL,
+  `upld_auth_yn` char(1) DEFAULT NULL,
+  `dnl_auth_yn` char(1) DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`role_auth_id`),
+  KEY `fk_sysroleauth_sysrolebas_roleid` (`role_id`),
+  KEY `fk_sysroleauth_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_sysroleauth_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_sysroleauth_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_sysroleauth_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysroleauth_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysroleauth_sysrolebas_roleid` FOREIGN KEY (`role_id`) REFERENCES `sys_role_bas` (`role_id`),
+  CONSTRAINT `fk_sysroleauth_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_role_auth`
+--
+
+LOCK TABLES `sys_role_auth` WRITE;
+/*!40000 ALTER TABLE `sys_role_auth` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_role_auth` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_bas`
+--
+
+DROP TABLE IF EXISTS `sys_role_bas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_role_bas` (
+  `role_id` varchar(20) NOT NULL,
+  `role_nm` varchar(100) DEFAULT NULL,
+  `role_desc` varchar(200) DEFAULT NULL,
+  `bsrole_yn` char(1) DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `shop_cd` varchar(20) DEFAULT NULL,
+  `shop_tcd` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`role_id`),
+  KEY `fk_sysrolebas_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_sysrolebas_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_role_bas`
+--
+
+LOCK TABLES `sys_role_bas` WRITE;
+/*!40000 ALTER TABLE `sys_role_bas` DISABLE KEYS */;
+INSERT INTO `sys_role_bas` VALUES ('ROL0001','USER','USER ROLE','Y','Y','testshopcd','pa');
+/*!40000 ALTER TABLE `sys_role_bas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_clct`
+--
+
+DROP TABLE IF EXISTS `sys_role_clct`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_role_clct` (
+  `role_clct_id` varchar(20) NOT NULL,
+  `user_id` varchar(20) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `auth_id` varchar(40) NOT NULL,
+  `org_cd` varchar(20) DEFAULT NULL,
+  `pos_cd` varchar(20) DEFAULT NULL,
+  `clct_tcd` varchar(20) DEFAULT NULL,
+  `clct_dt` date DEFAULT NULL,
+  `grnt_dt` date DEFAULT NULL,
+  KEY `fk_sysroleclct_eluserinfo_userid` (`user_id`),
+  KEY `fk_sysroleclct_sysshopinfo_shopcd` (`fact_cd`),
+  KEY `fk_sysroleclct_sysroleauth_roleauthid` (`auth_id`),
+  KEY `fk_sysroleclct_eldeptinfo_orgcd` (`org_cd`),
+  CONSTRAINT `fk_sysroleclct_eldeptinfo_orgcd` FOREIGN KEY (`org_cd`) REFERENCES `ei_org_bas` (`dept_cd`),
+  CONSTRAINT `fk_sysroleclct_eluserinfo_userid` FOREIGN KEY (`user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysroleclct_sysroleauth_roleauthid` FOREIGN KEY (`auth_id`) REFERENCES `sys_role_auth` (`role_auth_id`),
+  CONSTRAINT `fk_sysroleclct_sysshopinfo_shopcd` FOREIGN KEY (`fact_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_role_clct`
+--
+
+LOCK TABLES `sys_role_clct` WRITE;
+/*!40000 ALTER TABLE `sys_role_clct` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_role_clct` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_mgnt`
+--
+
+DROP TABLE IF EXISTS `sys_role_mgnt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_role_mgnt` (
+  `role_mgnt_id` varchar(20) NOT NULL,
+  `emp_no` varchar(20) DEFAULT NULL,
+  `dept_cd` varchar(100) DEFAULT NULL,
+  `role_id` varchar(40) DEFAULT NULL,
+  `fact_cd` varchar(20) DEFAULT NULL,
+  `reason_txt` varchar(100) DEFAULT NULL,
+  `manager_id` varchar(20) DEFAULT NULL,
+  `req_dt` date DEFAULT NULL,
+  `proc_dt` date DEFAULT NULL,
+  `prog_cd` char(1) DEFAULT NULL,
+  PRIMARY KEY (`role_mgnt_id`),
+  KEY `fk_sysrolemgnt_eldeptinfo_deptcd` (`dept_cd`),
+  KEY `fk_sysrolemgnt_sysrolebas_roleid` (`role_id`),
+  KEY `fk_sysrolemgnt_eluserinfo_managerid` (`manager_id`),
+  CONSTRAINT `fk_sysrolemgnt_eldeptinfo_deptcd` FOREIGN KEY (`dept_cd`) REFERENCES `ei_org_bas` (`dept_cd`),
+  CONSTRAINT `fk_sysrolemgnt_eluserinfo_managerid` FOREIGN KEY (`manager_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysrolemgnt_sysrolebas_roleid` FOREIGN KEY (`role_id`) REFERENCES `sys_role_bas` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_role_mgnt`
+--
+
+LOCK TABLES `sys_role_mgnt` WRITE;
+/*!40000 ALTER TABLE `sys_role_mgnt` DISABLE KEYS */;
+INSERT INTO `sys_role_mgnt` VALUES ('4c5f9493f6fc11ed97fd','111223','THLD','testroleid','CDTESTchild1','testreason','1112222','2023-05-20','2023-05-20','C');
+/*!40000 ALTER TABLE `sys_role_mgnt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_req`
+--
+
+DROP TABLE IF EXISTS `sys_role_req`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_role_req` (
+  `role_req_id` varchar(20) NOT NULL,
+  `role_id` varchar(20) NOT NULL,
+  `user_id` varchar(20) NOT NULL,
+  `req_dt` date DEFAULT NULL,
+  `st_dttm` date DEFAULT NULL,
+  `end_dttm` date DEFAULT NULL,
+  `reason` varchar(200) DEFAULT NULL,
+  `confirm_yn` char(1) DEFAULT NULL,
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  PRIMARY KEY (`role_req_id`),
+  KEY `fk_sysrolereq_sysrolebas_roleid` (`role_id`),
+  KEY `fk_sysrolereq_eluserinfo_userid` (`user_id`),
+  KEY `fk_sysrolereq_sysshopinfo_shopcd` (`shop_cd`),
+  CONSTRAINT `fk_sysrolereq_eluserinfo_userid` FOREIGN KEY (`user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysrolereq_sysrolebas_roleid` FOREIGN KEY (`role_id`) REFERENCES `sys_role_bas` (`role_id`),
+  CONSTRAINT `fk_sysrolereq_sysshopinfo_shopcd` FOREIGN KEY (`shop_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_role_req`
+--
+
+LOCK TABLES `sys_role_req` WRITE;
+/*!40000 ALTER TABLE `sys_role_req` DISABLE KEYS */;
+INSERT INTO `sys_role_req` VALUES ('ROR0001','ROL0001','111223','2023-05-20','2023-05-21','2023-06-21','부서 이동으로 인한 도장 점검 권한 요청의 건','Y','testshopcd','pa');
+/*!40000 ALTER TABLE `sys_role_req` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_role_sys_grnt`
+--
+
+DROP TABLE IF EXISTS `sys_role_sys_grnt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_role_sys_grnt` (
+  `role_sys_grnt_id` varchar(20) NOT NULL,
+  `emp_no` varchar(20) NOT NULL,
+  `dept_cd` varchar(100) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `auth_id` varchar(40) NOT NULL,
+  `grnt_dt` date DEFAULT NULL,
+  `manager_id` varchar(20) DEFAULT NULL,
+  `clct_dt` date DEFAULT NULL,
+  `clct_id` varchar(20) DEFAULT NULL,
+  `prog_cd` char(1) DEFAULT NULL,
+  PRIMARY KEY (`role_sys_grnt_id`),
+  KEY `fk_sysrolesysgrnt_eluserinfo_empno` (`emp_no`),
+  KEY `fk_sysrolesysgrnt_eldeptinfo_deptcd` (`dept_cd`),
+  KEY `fk_sysrolesysgrnt_sysshopinfo_shopcd` (`fact_cd`),
+  KEY `fk_sysrolesysgrnt_sysroleauth_roleauthid` (`auth_id`),
+  KEY `fk_sysrolesysgrnt_eluserinfo_managerid` (`manager_id`),
+  KEY `fk_sysrolesysgrnt_eluserinfo_clctid` (`clct_id`),
+  CONSTRAINT `fk_sysrolesysgrnt_eldeptinfo_deptcd` FOREIGN KEY (`dept_cd`) REFERENCES `ei_org_bas` (`dept_cd`),
+  CONSTRAINT `fk_sysrolesysgrnt_eluserinfo_clctid` FOREIGN KEY (`clct_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysrolesysgrnt_eluserinfo_empno` FOREIGN KEY (`emp_no`) REFERENCES `ei_user_info` (`emp_no`),
+  CONSTRAINT `fk_sysrolesysgrnt_eluserinfo_managerid` FOREIGN KEY (`manager_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysrolesysgrnt_sysroleauth_roleauthid` FOREIGN KEY (`auth_id`) REFERENCES `sys_role_auth` (`role_auth_id`),
+  CONSTRAINT `fk_sysrolesysgrnt_sysshopinfo_shopcd` FOREIGN KEY (`fact_cd`) REFERENCES `sys_shop_info` (`shop_cd`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_role_sys_grnt`
+--
+
+LOCK TABLES `sys_role_sys_grnt` WRITE;
+/*!40000 ALTER TABLE `sys_role_sys_grnt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_role_sys_grnt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_shop_info`
+--
+
+DROP TABLE IF EXISTS `sys_shop_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_shop_info` (
+  `shop_cd` varchar(20) NOT NULL,
+  `shop_tcd` varchar(2) NOT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  `lang_cd` varchar(3) NOT NULL,
+  `sys_nm` varchar(40) DEFAULT NULL,
+  `sys_desc_sum` varchar(200) DEFAULT NULL,
+  `sys_desc` text DEFAULT NULL,
+  `use_yn` char(1) DEFAULT NULL,
+  `sys_admin_id` varchar(20) DEFAULT NULL,
+  `affr_crgr_id` varchar(20) DEFAULT NULL,
+  `org_cd` varchar(10) DEFAULT NULL,
+  `reg_dt` date DEFAULT NULL,
+  `reg_user_id` varchar(20) NOT NULL,
+  `modi_user_id` varchar(20) DEFAULT NULL,
+  `modi_dt` date DEFAULT NULL,
+  `reg_user_nm` varchar(20) DEFAULT NULL,
+  `modi_user_nm` varchar(20) DEFAULT NULL,
+  `sort_no` int(11) DEFAULT NULL,
+  `vehl_dsp_cd` char(1) DEFAULT NULL,
+  `shift_cd` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`shop_cd`),
+  KEY `fk_sysshopinfo_eluserinfo_reguserid` (`reg_user_id`),
+  KEY `fk_sysshopinfo_eluserinfo_modiuserid` (`modi_user_id`),
+  KEY `fk_sysshopinfo_eldeptinfo_orgcd` (`org_cd`),
+  CONSTRAINT `fk_sysshopinfo_eldeptinfo_orgcd` FOREIGN KEY (`org_cd`) REFERENCES `ei_org_bas` (`dept_cd`),
+  CONSTRAINT `fk_sysshopinfo_eluserinfo_modiuserid` FOREIGN KEY (`modi_user_id`) REFERENCES `ei_user_info` (`user_id`),
+  CONSTRAINT `fk_sysshopinfo_eluserinfo_reguserid` FOREIGN KEY (`reg_user_id`) REFERENCES `ei_user_info` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_shop_info`
+--
+
+LOCK TABLES `sys_shop_info` WRITE;
+/*!40000 ALTER TABLE `sys_shop_info` DISABLE KEYS */;
+INSERT INTO `sys_shop_info` VALUES ('testshopcd','pa','kv123pa','ko',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'111223',NULL,NULL,NULL,NULL,NULL,NULL,NULL),('testshopcd2','cd','testfactcd','ko',NULL,NULL,NULL,NULL,NULL,'111223',NULL,NULL,'111224',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `sys_shop_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_user_log`
+--
+
+DROP TABLE IF EXISTS `sys_user_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_user_log` (
+  `user_log_id` varchar(20) NOT NULL,
+  `emp_no` varchar(20) NOT NULL,
+  `type_cd` char(1) DEFAULT NULL,
+  `log_dt` date DEFAULT NULL,
+  `last_use_dttm` time DEFAULT NULL,
+  `ip_addr` varchar(20) DEFAULT NULL,
+  `fact_cd` varchar(20) NOT NULL,
+  PRIMARY KEY (`user_log_id`),
+  KEY `fk_sysuserlog_eluserinfo_empno` (`emp_no`),
+  CONSTRAINT `fk_sysuserlog_eluserinfo_empno` FOREIGN KEY (`emp_no`) REFERENCES `ei_user_info` (`emp_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_user_log`
+--
+
+LOCK TABLES `sys_user_log` WRITE;
+/*!40000 ALTER TABLE `sys_user_log` DISABLE KEYS */;
+INSERT INTO `sys_user_log` VALUES ('	   {F =< T  K  ','111223','I','2023-05-19','13:25:09','127.0.0.1','temp factcd'),('  \\	]` \Z?_ !nU  _','111223','I','2023-05-20','00:49:48','127.0.0.1','testfactcd'),('    s& xw\'EK Q MT (','111223','I','2023-05-19','13:25:55','127.0.0.1','temp factcd'),(' (     \0]!l\n   O2 ','111223','O','2023-05-19','13:27:17','127.0.0.1','temp factcd'),(' F ߂k   fb˵U GHr','111223','I','2023-05-20','12:53:56','127.0.0.1','testfactcd'),('7k  ԬO7P E 8(d  ![','111223','I','2023-05-20','00:54:45','127.0.0.1','testfactcd'),('8.\09o     .\r3z V  [','111223','I','2023-05-19','12:42:45','127.0.0.1','temp factcd'),('SUL0','000000','I','2023-05-21','18:48:53','127.0.0.1','kv123cd'),('_pP  P -0l3   kV','111223','I','2023-05-20','00:46:38','127.0.0.1','testfactcd');
+/*!40000 ALTER TABLE `sys_user_log` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-05-22 17:20:15
